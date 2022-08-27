@@ -1,3 +1,4 @@
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 const clientId = "Iv1.395428b4814a0264";
 
 interface LoginResponse {
@@ -12,7 +13,7 @@ interface Params {
   state: string;
 }
 
-const allowCors = (fn) => async (req, res) => {
+const allowCors = (fn) => async (req: VercelRequest, res: VercelResponse) => {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -27,15 +28,17 @@ const allowCors = (fn) => async (req, res) => {
   return await fn(req, res);
 };
 
-async function handler(request, response) {
-  console.log(request);
+async function handler(req: VercelRequest, res: VercelResponse) {
+  const body: Params = req.body;
+  console.log(body);
+  const loginResponse = await login(body);
+  console.log({ loginResponse });
 
-  // await login({state: ''})
-  response.status(200).json({
-    success: true,
-    // body: request.body,
-    // query: request.query,
-    // cookies: request.cookies,
+  res.status(200).json({
+    authToken: loginResponse.access_token,
+    expires_in: loginResponse.expires_in,
+    refresh_token: loginResponse.refresh_token,
+    refresh_token_expires_in: loginResponse.refresh_token_expires_in,
   });
 }
 export default allowCors(handler);
@@ -52,10 +55,6 @@ const login = async ({ state, code }: Params) => {
   url.searchParams.append("state", state);
   const response = await fetchJson<LoginResponse>(url, {
     method: "post",
-    // headers: {
-    //   Accept: "application/json",
-    //   "Content-Type": "application/x-www-form-urlencoded",
-    // },
   });
   return response;
 };

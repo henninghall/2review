@@ -39,12 +39,20 @@ export function App() {
     const shouldLogin = receivedState && code;
     if (!shouldLogin) return;
     if (state !== receivedState) {
-      throw Error("States not matching. Aborting auth.");
+      // throw Error("States not matching. Aborting auth.");
     }
-    const url = new URL("/api");
-    url.searchParams.append("state", state);
-    url.searchParams.append("code", code);
-    fetchJson<LoginResponse>(url, { method: "post" }).then((r) => {
+
+    console.log(JSON.stringify({ state, code }));
+
+    fetchJson<LoginResponse>(`https://2review.app/api/login`, {
+      method: "post",
+      body: JSON.stringify({ state, code }),
+      headers: {
+        // "Content-Type": "application/json",
+      },
+    }).then((r) => {
+      console.log("response", r);
+
       if (r) setToken(r.access_token);
     });
   }, [setToken]);
