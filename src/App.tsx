@@ -13,10 +13,7 @@ export function App() {
     false
   );
   const hasCompletedSetup = token && username;
-  const [showSettings, setShowSettings] = useLocalStorage<boolean>(
-    "setup",
-    !hasCompletedSetup
-  );
+  const [showSettings, setShowSettings] = useState<boolean>(!hasCompletedSetup);
 
   useEffect(() => {
     if (!token) return;
@@ -33,8 +30,7 @@ export function App() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        margin: 20,
-        marginTop: 0,
+        margin: "0px 3vw",
         marginBottom: 40,
       }}
     >
@@ -96,7 +92,7 @@ export function App() {
         >
           <h2 style={{ margin: 0 }}>Pull requests awaiting your review</h2>
           <Checkbox
-            label="Only personal"
+            label="Personal"
             checked={onlyPersonal}
             onChange={setOnlyPersonal}
           />
@@ -106,15 +102,17 @@ export function App() {
           const reviewers = [...d.person, ...d.teams];
           return (
             <div
+              key={d.html_url}
               style={{
                 backgroundColor: "#363636",
                 borderRadius: 10,
-                padding: "10px 50px",
+                padding: "3vh 4vw",
                 boxShadow: "0 2px 5px #111",
                 cursor: "pointer",
                 display: "flex",
+                flexWrap: "wrap",
                 alignItems: "center",
-                gap: 30,
+                gap: 20,
               }}
               onClick={() => {
                 window.open(d.html_url);
@@ -125,11 +123,20 @@ export function App() {
                 alt="open pull request"
                 style={{ width: size, height: size }}
               />
-              <h3 style={{ flex: 3 }}>{d.title}</h3>
-              <ul style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+              <h3 style={{ flex: 3, margin: 0 }}>{d.title}</h3>
+              <ul
+                style={{
+                  flex: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
                 {reviewers.map((r) => {
                   return (
-                    <li style={{ margin: 0, marginBottom: 4, fontSize: 16 }}>
+                    <li
+                      key={r}
+                      style={{ margin: 0, marginBottom: 4, fontSize: 16 }}
+                    >
                       {r}
                     </li>
                   );

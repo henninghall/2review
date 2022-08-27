@@ -1,7 +1,7 @@
 import { Octokit } from "octokit";
 
 const pages = 1;
-const per_page = 10;
+const per_page = 50;
 
 export const fetchData = async ({
   token,

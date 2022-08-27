@@ -25,6 +25,12 @@ ul li::before {
   color: #666; /* Change the color */
   font-weight: bold; /* If you want it to be bold */
   display: inline-block; /* Needed to add space between the bullet and the text */
-  width: 1em; /* Also needed for space (tweak if needed) */
+  width: 0.8em; /* Also needed for space (tweak if needed) */
   margin-left: -0.8em; /* Also needed for space (tweak if needed) */
+}
+
+ul { 
+  padding: 0;
+  margin: 0;
+  padding-left: 0.8em;
 }
