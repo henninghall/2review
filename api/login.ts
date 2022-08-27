@@ -12,7 +12,22 @@ interface Params {
   state: string;
 }
 
-export default async function handler(request, response) {
+const allowCors = (fn) => async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+  );
+
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+  }
+
+  return await fn(req, res);
+};
+
+async function handler(request, response) {
   console.log(request);
 
   // await login({state: ''})
@@ -23,6 +38,7 @@ export default async function handler(request, response) {
     // cookies: request.cookies,
   });
 }
+export default allowCors(handler);
 
 const login = async ({ state, code }: Params) => {
   if (!process.env.REACT_APP_CLIENT_SECRET)
