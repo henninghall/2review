@@ -27,6 +27,7 @@ async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const loginResponse = await login(body);
     const params = new URLSearchParams(loginResponse);
+    console.log(loginResponse);
 
     return res.status(200).json({
       access_token: params.get("access_token"),
