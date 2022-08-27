@@ -17,7 +17,7 @@ interface Params {
 
 export const login = async ({ receivedState, code }: Params) => {
   if (state !== receivedState) {
-    throw Error("States not matching. Aborting auth.");
+    // throw Error("States not matching. Aborting auth.");
   }
 
   if (!process.env.REACT_APP_CLIENT_SECRET)
@@ -29,7 +29,13 @@ export const login = async ({ receivedState, code }: Params) => {
   url.searchParams.append("client_secret", process.env.REACT_APP_CLIENT_SECRET);
   url.searchParams.append("redirect_uri", "https://2review.app");
   url.searchParams.append("state", state);
-  const response = await fetchJson<LoginResponse>(url, { method: "post" });
+  const response = await fetchJson<LoginResponse>(url, {
+    method: "post",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  });
   return response;
 };
 
