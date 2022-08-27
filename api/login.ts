@@ -54,7 +54,7 @@ const login = async ({ state, code }: Params) => {
   url.searchParams.append("client_secret", process.env.REACT_APP_CLIENT_SECRET);
   url.searchParams.append("redirect_uri", "https://2review.app");
   url.searchParams.append("state", state);
-  const response = await fetchJson<LoginResponse>(url, {
+  const response = await fetchJson<LoginResponse>(url.href, {
     method: "post",
   });
   return response;
