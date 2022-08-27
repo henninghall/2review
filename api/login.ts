@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import fetch from "node-fetch";
+const fetch = require("node-fetch");
 const clientId = "Iv1.395428b4814a0264";
 
 interface LoginResponse {
