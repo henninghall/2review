@@ -61,10 +61,16 @@ export function App() {
         >
           <Input
             label="Github username"
+            placeholder="Username"
             value={username}
             onChange={setUsername}
           />
-          <Input label="Github token" value={token} onChange={setToken} />
+          <Input
+            label="Github token"
+            placeholder="Token"
+            value={token}
+            onChange={setToken}
+          />
         </div>
       )}
 
@@ -141,9 +147,11 @@ function Input({
   value,
   onChange,
   label,
+  placeholder,
 }: {
   label: string;
   value: string;
+  placeholder: string;
   onChange: (v: string) => void;
 }) {
   return (
@@ -157,7 +165,7 @@ function Input({
     >
       {label}
       <input
-        placeholder="Github token"
+        placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         style={{
