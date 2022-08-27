@@ -33,13 +33,13 @@ async function handler(req: VercelRequest, res: VercelResponse) {
   const body: Params = JSON.parse(req.body);
   try {
     const loginResponse = await login(body);
-    console.log({ loginResponse });
+    const params = new URLSearchParams(loginResponse);
 
     return res.status(200).json({
-      authToken: loginResponse.access_token,
-      expires_in: loginResponse.expires_in,
-      refresh_token: loginResponse.refresh_token,
-      refresh_token_expires_in: loginResponse.refresh_token_expires_in,
+      authToken: params.get("access_token"),
+      expires_in: params.get("expires_in"),
+      refresh_token: params.get("refresh_token"),
+      refresh_token_expires_in: params.get("refresh_token_expires_in"),
     });
   } catch (e) {
     console.log(e);
@@ -62,7 +62,7 @@ const login = async ({ state, code }: Params) => {
 
   console.log(body);
 
-  const response = await fetchJson<LoginResponse>(
+  const response = await fetchJson<string>(
     "https://github.com/login/oauth/access_token",
     {
       method: "post",
@@ -72,6 +72,7 @@ const login = async ({ state, code }: Params) => {
       body,
     }
   );
+
   return response;
 };
 
