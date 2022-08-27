@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
 import { authorizeUrl } from "./auth/authorize";
-import { login } from "./auth/login";
+import { state } from "./auth/state";
 import { fetchData } from "./fetchData";
+import { fetchJson } from "./fetchjson";
 import pr from "./svg/pr.svg";
 import settings from "./svg/settings.svg";
 import { useLocalStorage } from "./useLocalStorage";
 const size = 30;
+
+interface LoginResponse {
+  access_token: string;
+  expires_in: number;
+  refresh_token: string;
+  refresh_token_expires_in: number;
+}
 
 export function App() {
   const [data, setData] = useState<Awaited<ReturnType<typeof fetchData>>>();
@@ -26,11 +34,17 @@ export function App() {
 
   useEffect(() => {
     const currentSearchParams = new URLSearchParams(window.location.search);
-    const state = currentSearchParams.get("state");
+    const receivedState = currentSearchParams.get("state");
     const code = currentSearchParams.get("code");
-    const shouldLogin = state && code;
+    const shouldLogin = receivedState && code;
     if (!shouldLogin) return;
-    login({ code, receivedState: state }).then((r) => {
+    if (state !== receivedState) {
+      throw Error("States not matching. Aborting auth.");
+    }
+    const url = new URL("/api");
+    url.searchParams.append("state", state);
+    url.searchParams.append("code", code);
+    fetchJson<LoginResponse>(url, { method: "post" }).then((r) => {
       if (r) setToken(r.access_token);
     });
   }, [setToken]);
