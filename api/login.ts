@@ -2,13 +2,6 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import fetch from "node-fetch";
 const clientId = "Iv1.395428b4814a0264";
 
-interface LoginResponse {
-  access_token: string;
-  expires_in: number;
-  refresh_token: string;
-  refresh_token_expires_in: number;
-}
-
 interface Params {
   code: string;
   state: string;
@@ -59,8 +52,6 @@ const login = async ({ state, code }: Params) => {
     redirect_uri: "https://2review.app",
     state,
   });
-
-  console.log(body);
 
   const response = await fetchJson<string>(
     "https://github.com/login/oauth/access_token",

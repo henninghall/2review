@@ -4,6 +4,7 @@ import { state } from "./auth/state";
 import { fetchData } from "./fetchData";
 import { fetchJson } from "./fetchjson";
 import pr from "./svg/pr.svg";
+import github from "./svg/github.svg";
 import settings from "./svg/settings.svg";
 import { useLocalStorage } from "./useLocalStorage";
 const size = 30;
@@ -39,21 +40,15 @@ export function App() {
     const shouldLogin = receivedState && code;
     if (!shouldLogin) return;
     if (state !== receivedState) {
-      // throw Error("States not matching. Aborting auth.");
+      throw Error("States not matching. Aborting auth.");
     }
-
-    console.log("fetching...");
 
     fetchJson<LoginResponse>(`https://2review.app/api/login`, {
       method: "post",
       body: JSON.stringify({ state, code }),
-      headers: {
-        // "Content-Type": "application/json",
-      },
-    }).then((r) => {
-      console.log("response", r);
-
-      if (r) setToken(r.access_token);
+    }).then((response) => {
+      console.log(response);
+      if (response) setToken(response.access_token);
     });
   }, [setToken]);
 
@@ -70,7 +65,27 @@ export function App() {
         marginBottom: 40,
       }}
     >
-      <a href={authorizeUrl}>Login</a>
+      <button
+        onClick={() => {
+          window.location.href = authorizeUrl;
+        }}
+        style={{
+          backgroundColor: "#363636",
+          color: "white",
+          fontSize: 20,
+          padding: 10,
+          borderRadius: 7,
+          border: "1px solid #555",
+          cursor: "pointer",
+          display: "flex",
+          gap: 15,
+          alignItems: "center",
+        }}
+      >
+        <img src={github} alt="github" style={{ width: size, height: size }} />
+        <span>Sign in with github</span>
+      </button>
+
       <img
         src={settings}
         alt="settings"
@@ -160,6 +175,7 @@ export function App() {
                 alt="open pull request"
                 style={{ width: size, height: size }}
               />
+
               <h3 style={{ flex: 3, margin: 0 }}>{d.title}</h3>
               <ul
                 style={{
