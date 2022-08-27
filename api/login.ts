@@ -36,7 +36,7 @@ async function handler(req: VercelRequest, res: VercelResponse) {
     const params = new URLSearchParams(loginResponse);
 
     return res.status(200).json({
-      authToken: params.get("access_token"),
+      access_token: params.get("access_token"),
       expires_in: params.get("expires_in"),
       refresh_token: params.get("refresh_token"),
       refresh_token_expires_in: params.get("refresh_token_expires_in"),
