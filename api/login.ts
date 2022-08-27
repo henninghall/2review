@@ -30,7 +30,7 @@ const allowCors = (fn) => async (req: VercelRequest, res: VercelResponse) => {
 };
 
 async function handler(req: VercelRequest, res: VercelResponse) {
-  const body: Params = req.body;
+  const body: Params = JSON.parse(req.body);
   try {
     console.log({ body });
 
