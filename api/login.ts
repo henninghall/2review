@@ -54,15 +54,16 @@ const login = async ({ state, code }: Params) => {
     throw Error("Missing client secret");
 
   const url = new URL("https://github.com/login/oauth/access_token");
+  url.searchParams.append("client_id", clientId);
+  url.searchParams.append("code", code);
+  url.searchParams.append("client_secret", process.env.REACT_APP_CLIENT_SECRET);
+  url.searchParams.append("redirect_uri", "https://2review.app");
+  url.searchParams.append("state", state);
   const response = await fetchJson<LoginResponse>(url.href, {
     method: "post",
-    body: JSON.stringify({
-      client_id: clientId,
-      code,
-      client_secret: process.env.REACT_APP_CLIENT_SECRET,
-      redirect_uri: "https://2review.app",
-      state,
-    }),
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
   });
   return response;
 };
