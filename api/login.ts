@@ -32,8 +32,6 @@ const allowCors = (fn) => async (req: VercelRequest, res: VercelResponse) => {
 async function handler(req: VercelRequest, res: VercelResponse) {
   const body: Params = JSON.parse(req.body);
   try {
-    console.log({ body });
-
     const loginResponse = await login(body);
     console.log({ loginResponse });
 
@@ -54,6 +52,16 @@ const login = async ({ state, code }: Params) => {
   if (!process.env.REACT_APP_CLIENT_SECRET)
     throw Error("Missing client secret");
 
+  const body = new URLSearchParams({
+    client_id: clientId,
+    code,
+    client_secret: process.env.REACT_APP_CLIENT_SECRET,
+    redirect_uri: "https://2review.app",
+    state,
+  });
+
+  console.log(body);
+
   const response = await fetchJson<LoginResponse>(
     "https://github.com/login/oauth/access_token",
     {
@@ -61,13 +69,7 @@ const login = async ({ state, code }: Params) => {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: new URLSearchParams({
-        client_id: clientId,
-        code,
-        client_secret: process.env.REACT_APP_CLIENT_SECRET,
-        redirect_uri: "https://2review.app",
-        state,
-      }),
+      body,
     }
   );
   return response;
@@ -75,6 +77,6 @@ const login = async ({ state, code }: Params) => {
 
 async function fetchJson<T>(...params: Parameters<typeof fetch>) {
   const response = await fetch(...params);
-  const data: T = await response.json();
+  const data: T = await response.text();
   return data;
 }

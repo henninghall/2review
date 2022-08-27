@@ -42,6 +42,8 @@ export function App() {
       // throw Error("States not matching. Aborting auth.");
     }
 
+    console.log("fetching...");
+
     fetchJson<LoginResponse>(`https://2review.app/api/login`, {
       method: "post",
       body: JSON.stringify({ state, code }),
