@@ -36,15 +36,15 @@ async function handler(req: VercelRequest, res: VercelResponse) {
     const loginResponse = await login(body);
     console.log({ loginResponse });
 
-    res.status(200).json({
+    return res.status(200).json({
       authToken: loginResponse.access_token,
       expires_in: loginResponse.expires_in,
       refresh_token: loginResponse.refresh_token,
       refresh_token_expires_in: loginResponse.refresh_token_expires_in,
     });
   } catch (e) {
-    res.statusMessage = e.message;
-    res.status(400);
+    console.log(e);
+    return res.status(400).json({ error: e.message });
   }
 }
 export default allowCors(handler);
