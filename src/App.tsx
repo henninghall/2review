@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { authorizeUrl } from "./auth/authorize";
+import { login } from "./auth/login";
 import { fetchData } from "./fetchData";
 import pr from "./svg/pr.svg";
 import settings from "./svg/settings.svg";
 import { useLocalStorage } from "./useLocalStorage";
 const size = 30;
+
 export function App() {
   const [data, setData] = useState<Awaited<ReturnType<typeof fetchData>>>();
   const [token, setToken] = useLocalStorage<string>("token", "");
@@ -21,6 +24,17 @@ export function App() {
     fetchData({ token, username }).then(setData);
   }, [token, username]);
 
+  useEffect(() => {
+    const currentSearchParams = new URLSearchParams(window.location.search);
+    const state = currentSearchParams.get("state");
+    const code = currentSearchParams.get("code");
+    const shouldLogin = state && code;
+    if (!shouldLogin) return;
+    login({ code, receivedState: state }).then((r) => {
+      if (r) setToken(r.access_token);
+    });
+  }, [setToken]);
+
   const rows = data?.filter((d) => (onlyPersonal ? d.person.length : true));
 
   return (
@@ -34,6 +48,7 @@ export function App() {
         marginBottom: 40,
       }}
     >
+      <a href={authorizeUrl}>Login</a>
       <img
         src={settings}
         alt="settings"
