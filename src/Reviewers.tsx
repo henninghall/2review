@@ -1,4 +1,3 @@
-import Skeleton from "react-loading-skeleton";
 import styled from "styled-components";
 import { colors } from "./ui/colors";
 
@@ -13,19 +12,13 @@ export const Reviewers = ({
 }) => {
   return (
     <Ul>
-      {loading || preview ? (
-        <Skeleton
-          count={2}
-          width={"80%"}
-          height="0.8em"
-          enableAnimation={loading}
-          baseColor={colors.gray400}
-        />
-      ) : (
-        reviewers.map((reviewer) => (
-          <Reviewer key={reviewer}>{reviewer}</Reviewer>
-        ))
-      )}
+      {loading || preview
+        ? Array.from({ length: 2 }).map(() => (
+            <div style={{ height: "0.7em", backgroundColor: colors.gray400 }} />
+          ))
+        : reviewers.map((reviewer) => (
+            <Reviewer key={reviewer}>{reviewer}</Reviewer>
+          ))}
     </Ul>
   );
 };
