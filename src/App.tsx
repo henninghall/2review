@@ -3,8 +3,8 @@ import { authorizeUrl } from "./auth/authorize";
 import { state } from "./auth/state";
 import { fetchData } from "./fetchData";
 import { fetchJson } from "./fetchjson";
+import { LoginButton } from "./LoginButton";
 import pr from "./svg/pr.svg";
-import github from "./svg/github.svg";
 import settings from "./svg/settings.svg";
 import { useLocalStorage } from "./useLocalStorage";
 const size = 30;
@@ -65,27 +65,13 @@ export function App() {
         marginBottom: 40,
       }}
     >
-      <button
-        onClick={() => {
-          window.location.href = authorizeUrl;
-        }}
-        style={{
-          backgroundColor: "#363636",
-          color: "white",
-          fontSize: 20,
-          padding: 10,
-          borderRadius: 7,
-          border: "1px solid #555",
-          cursor: "pointer",
-          display: "flex",
-          gap: 15,
-          alignItems: "center",
-        }}
-      >
-        <img src={github} alt="github" style={{ width: size, height: size }} />
-        <span>Sign in with github</span>
-      </button>
-
+      {!token && (
+        <LoginButton
+          onClick={() => {
+            window.location.href = authorizeUrl;
+          }}
+        />
+      )}
       <img
         src={settings}
         alt="settings"

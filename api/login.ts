@@ -36,7 +36,7 @@ async function handler(req: VercelRequest, res: VercelResponse) {
       refresh_token_expires_in: params.get("refresh_token_expires_in"),
     });
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return res.status(400).json({ error: e.message });
   }
 }
