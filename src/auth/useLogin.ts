@@ -11,6 +11,8 @@ interface LoginResponse {
   refresh_token_expires_in: number;
 }
 
+export const appType: "oauthApp" | "githubApp" = "oauthApp";
+
 export const useLogin = () => {
   const [, setToken] = useToken();
   const [, setIsAuthorizing] = useIsAuthorizing();
@@ -32,8 +34,7 @@ export const useLogin = () => {
         state,
         code,
         redirect_uri: window.location.origin,
-        type: "oauthApp",
-        // type: "githubApp",
+        type: appType,
       }),
     })
       .then((response) => {
