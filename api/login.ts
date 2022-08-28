@@ -1,11 +1,11 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import fetch from "node-fetch";
-const clientId = "Iv1.395428b4814a0264";
 
 interface Body {
   code: string;
   state: string;
   redirect_uri: string;
+  type: "githubApp" | "oauthApp";
 }
 
 const withCors = (fn) => async (req: VercelRequest, res: VercelResponse) => {
@@ -43,8 +43,18 @@ async function handler(req: VercelRequest, res: VercelResponse) {
 }
 export default withCors(handler);
 
-const login = async ({ state, code, redirect_uri }: Body) => {
-  if (!process.env.CLIENT_SECRET) throw Error("Missing client secret");
+const login = async ({ state, code, redirect_uri, type }: Body) => {
+  const client_secret =
+    type === "githubApp"
+      ? process.env.GITHUB_APP_CLIENT_SECRET
+      : process.env.OAUTH_APP_CLIENT_SECRET;
+  if (!client_secret) throw Error("Missing client secret env");
+
+  const client_id =
+    type === "githubApp"
+      ? process.env.GITHUB_APP_CLIENT_ID
+      : process.env.OAUTH_APP_CLIENT_ID;
+  if (!client_id) throw Error("Missing client id env");
 
   const response = await fetchText<string>(
     "https://github.com/login/oauth/access_token",
@@ -54,9 +64,9 @@ const login = async ({ state, code, redirect_uri }: Body) => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        client_id: clientId,
+        client_id,
         code,
-        client_secret: process.env.CLIENT_SECRET,
+        client_secret,
         redirect_uri,
         state,
       }),

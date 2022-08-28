@@ -8,6 +8,7 @@ import { SettingsButton } from "./SettingsButton";
 import { SettingsModal } from "./SettingsModal";
 import { SignInOverlay } from "./SignInOverlay";
 import { Checkbox } from "./ui/Checkbox";
+import { colors } from "./ui/colors";
 import { useLocalStorage } from "./useLocalStorage";
 
 export function App() {
@@ -24,7 +25,13 @@ export function App() {
       <SettingsModal />
       <Content>
         <Header>
-          <h1>Pull requests awaiting your review</h1>
+          <div>
+            <h1>Pull requests awaiting your review</h1>
+            <p style={{ color: colors.gray200 }}>
+              Following pull requests are assigned to you or your team and are
+              waiting for review.
+            </p>
+          </div>
           {token && (
             <Checkbox
               label="Personal"

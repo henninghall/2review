@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { fetchJson } from "../fetchJson";
+import { fetchJson } from "../fetchJsonx";
 import { state } from "./state";
 import { useIsAuthorizing } from "./useIsAutherizing";
 import { useToken } from "./useToken";
@@ -32,6 +32,8 @@ export const useLogin = () => {
         state,
         code,
         redirect_uri: window.location.origin,
+        type: "oauthApp",
+        // type: "githubApp",
       }),
     })
       .then((response) => {
