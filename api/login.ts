@@ -43,7 +43,7 @@ async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: e.message });
   }
 }
-export default handler;
+export default withCors(handler);
 
 const login = async ({ state, code, redirect_uri, type }: Body) => {
   const client_secret =
