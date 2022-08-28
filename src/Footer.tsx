@@ -16,7 +16,9 @@ export const Footer = () => {
 
   return (
     <Container>
-      <A onClick={() => setShowHelp(true)}>Why don't all PR's show up?</A>
+      {token && (
+        <A onClick={() => setShowHelp(true)}>Why don't all PR's show up?</A>
+      )}
       <A onClick={() => setShowInstall(true)}>Installation</A>
       <A href="https://github.com/henninghall/2review">Github repo</A>
       {token && <A onClick={() => setShowSettings(true)}>Settings</A>}
