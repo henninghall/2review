@@ -31,8 +31,9 @@ export const usePullRequests = () => {
 const fetchPrs = async ({ token }: { token: string }) => {
   const octokit = new Octokit({ auth: token });
 
-  const { login } = (await octokit.rest.users.getAuthenticated()).data;
+  const { login, ...rest } = (await octokit.rest.users.getAuthenticated()).data;
   const orgs2 = await octokit.rest.orgs.listMembershipsForAuthenticatedUser({});
+  // const orgs2 = await octokit.rest.orgs.
   // const orgs2 = await octokit.rest.orgs.listMembershipsForAuthenticatedUser();
   // const orgs2 = await octokit.rest.orgs.listAppInstallations({
   //   org: "mindlercare",
