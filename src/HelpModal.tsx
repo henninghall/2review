@@ -13,7 +13,7 @@ export const HelpModal = () => {
     <InstallModal
       show={show}
       setShow={setShow}
-      title="Why doesn't all PR's show up?"
+      title="Why don't all PR's show up?"
     />
   );
 };

@@ -8,8 +8,6 @@ import { PullRequests } from "./PullRequests";
 import { SettingsModal } from "./SettingsModal";
 import { SignInOverlay } from "./SignInOverlay";
 import { colors } from "./ui/colors";
-import { Toggle } from "./ui/Toggle";
-import { useLocalStorage } from "./useLocalStorage";
 
 export function App() {
   const [token] = useToken();
