@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
-import { authorizeUrl } from "./auth/authorize";
+import { useEffect } from "react";
+import { LoginButton } from "./auth/LoginButton";
 import { state } from "./auth/state";
-import { fetchData } from "./fetchData";
+import { useIsAuthorizing } from "./auth/useIsAutherizing";
+import { useToken } from "./auth/useToken";
 import { fetchJson } from "./fetchjson";
-import { LoginButton } from "./LoginButton";
-import pr from "./svg/pr.svg";
-import settings from "./svg/settings.svg";
+import { PullRequests } from "./PullRequests";
+import { useShowSettings } from "./settings/useShowSettings";
+import { SettingsButton } from "./SettingsButtont";
+import { SettingsModal } from "./SettingsModal";
+import { Checkbox } from "./ui/Checkbox";
 import { useLocalStorage } from "./useLocalStorage";
-const size = 30;
 
 interface LoginResponse {
   access_token: string;
@@ -17,19 +19,13 @@ interface LoginResponse {
 }
 
 export function App() {
-  const [data, setData] = useState<Awaited<ReturnType<typeof fetchData>>>();
-  const [token, setToken] = useLocalStorage<string>("token", "");
+  const [token, setToken] = useToken();
   const [onlyPersonal, setOnlyPersonal] = useLocalStorage<boolean>(
     "onlyPersonal",
     false
   );
-  const hasCompletedSetup = token;
-  const [showSettings, setShowSettings] = useState<boolean>(!hasCompletedSetup);
-
-  useEffect(() => {
-    if (!token) return;
-    fetchData({ token }).then(setData);
-  }, [token]);
+  const [, setShowSettings] = useShowSettings();
+  const [, setIsAuth] = useIsAuthorizing();
 
   useEffect(() => {
     const currentSearchParams = new URLSearchParams(window.location.search);
@@ -40,6 +36,7 @@ export function App() {
     if (state !== receivedState) {
       throw Error("States not matching. Aborting auth.");
     }
+    setIsAuth(true);
 
     fetchJson<LoginResponse>(`https://2review.app/api/login`, {
       method: "post",
@@ -48,13 +45,14 @@ export function App() {
         code,
         redirect_uri: window.location.origin,
       }),
-    }).then((response) => {
-      console.log(response);
-      if (response.access_token) setToken(response.access_token);
-    });
-  }, [setToken]);
-
-  const rows = data?.filter((d) => (onlyPersonal ? d.person.length : true));
+    })
+      .then((response) => {
+        if (response.access_token) setToken(response.access_token);
+      })
+      .finally(() => {
+        setIsAuth(false);
+      });
+  }, [setIsAuth, setToken]);
 
   return (
     <div
@@ -64,51 +62,14 @@ export function App() {
         flexDirection: "column",
         alignItems: "center",
         margin: "0px 3vw",
-        marginBottom: 40,
       }}
     >
-      {!token && (
-        <LoginButton
-          onClick={() => {
-            window.location.href = authorizeUrl;
-          }}
-        />
-      )}
-      <img
-        src={settings}
-        alt="settings"
-        style={{
-          position: "absolute",
-          right: 15,
-          top: 15,
-          cursor: "pointer",
-        }}
-        onClick={() => setShowSettings((shown) => !shown)}
-      />
-      <h1>2 review</h1>
-      {showSettings && (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 10,
-            gridTemplateColumns: "1fr",
-          }}
-        >
-          <Input
-            label="Github token"
-            placeholder="Token"
-            value={token}
-            onChange={setToken}
-          />
-        </div>
-      )}
-
+      <SettingsModal />
       <div
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: 20,
+          gap: 10,
           backgroundColor: "transparent",
           width: "100%",
           maxWidth: 800,
@@ -118,10 +79,10 @@ export function App() {
         <div
           style={{
             display: "flex",
-            flexWrap: "wrap",
+            flexDirection: "row",
             gap: 20,
-            alignItems: "flex-end",
             justifyContent: "space-between",
+            alignItems: "flex-end",
           }}
         >
           <h2 style={{ margin: 0 }}>Pull requests awaiting your review</h2>
@@ -131,114 +92,23 @@ export function App() {
             onChange={setOnlyPersonal}
           />
         </div>
-
-        {rows?.map((d) => {
-          const reviewers = [...d.person, ...d.teams];
-          return (
-            <div
-              key={d.html_url}
-              style={{
-                backgroundColor: "#363636",
-                borderRadius: 10,
-                padding: "3vh 4vw",
-                boxShadow: "0 2px 5px #111",
-                cursor: "pointer",
-                display: "flex",
-                flexWrap: "wrap",
-                alignItems: "center",
-                gap: 20,
-              }}
-              onClick={() => {
-                window.open(d.html_url);
-              }}
-            >
-              <img
-                src={pr}
-                alt="open pull request"
-                style={{ width: size, height: size }}
-              />
-
-              <h3 style={{ flex: 3, margin: 0 }}>{d.title}</h3>
-              <ul
-                style={{
-                  flex: 1,
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                {reviewers.map((r) => {
-                  return (
-                    <li
-                      key={r}
-                      style={{ margin: 0, marginBottom: 4, fontSize: 16 }}
-                    >
-                      {r}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          );
-        })}
+        <PullRequests onlyPersonal={onlyPersonal} />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            margin: 20,
+          }}
+        >
+          {token ? (
+            <SettingsButton
+              onClick={() => setShowSettings((shown) => !shown)}
+            />
+          ) : (
+            <LoginButton />
+          )}
+        </div>
       </div>
     </div>
-  );
-}
-
-function Input({
-  value,
-  onChange,
-  label,
-  placeholder,
-}: {
-  label: string;
-  value: string;
-  placeholder: string;
-  onChange: (v: string) => void;
-}) {
-  return (
-    <label
-      style={{
-        display: "flex",
-        gap: 15,
-        alignItems: "center",
-        justifyContent: "space-between",
-      }}
-    >
-      {label}
-      <input
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        style={{
-          backgroundColor: "#363636",
-          borderRadius: 8,
-          padding: "7px 0px 7px 10px",
-          color: "#B5B5B5",
-        }}
-      />
-    </label>
-  );
-}
-
-function Checkbox({
-  checked,
-  onChange,
-  label,
-}: {
-  label: string;
-  checked: boolean;
-  onChange: (checked: boolean) => void;
-}) {
-  return (
-    <label>
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={() => onChange(!checked)}
-        style={{ marginRight: 10 }}
-      />
-      {label}
-    </label>
   );
 }

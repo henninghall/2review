@@ -1,9 +1,32 @@
 import { Octokit } from "octokit";
+import { useEffect, useState } from "react";
+import { useToken } from "./auth/useToken";
 
 const pages = 1;
 const per_page = 50;
 
-export const fetchData = async ({ token }: { token: string }) => {
+export const usePullRequests = () => {
+  const [token] = useToken();
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<Awaited<ReturnType<typeof fetchPrs>>>([]);
+
+  useEffect(() => {
+    if (!token) {
+      setData([]);
+      return;
+    }
+    setLoading(true);
+    fetchPrs({ token })
+      .then(setData)
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [token]);
+
+  return { data, loading };
+};
+
+const fetchPrs = async ({ token }: { token: string }) => {
   const octokit = new Octokit({ auth: token });
 
   const { login } = (await octokit.rest.users.getAuthenticated()).data;
