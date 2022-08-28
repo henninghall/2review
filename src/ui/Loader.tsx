@@ -1,8 +1,9 @@
 import styled from "styled-components";
+import { colors } from "./colors";
 
-export const Loader = () => {
+export const Loader = ({ small }: { small?: boolean }) => {
   return (
-    <Container className="lds-ellipsis" scale={0.5}>
+    <Container className="lds-ellipsis" scale={small ? 0.5 : 1}>
       <div></div>
       <div></div>
       <div></div>
@@ -22,7 +23,7 @@ const Container = styled.div<{ scale: number }>`
     width: ${({ scale }) => 13 * scale}px;
     height: ${({ scale }) => 13 * scale}px;
     border-radius: 50%;
-    background: #fff;
+    background: ${colors.gray100};
     animation-timing-function: cubic-bezier(0, 1, 1, 0);
   }
   div:nth-child(1) {

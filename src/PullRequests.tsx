@@ -1,4 +1,5 @@
 import pr from "./svg/pr.svg";
+import { Loader } from "./ui/Loader";
 import { usePullRequests } from "./usePullRequests";
 const size = 30;
 
@@ -9,7 +10,6 @@ export const PullRequests = ({ onlyPersonal }: { onlyPersonal: boolean }) => {
 
   return (
     <>
-      {loading && <p>Loading...</p>}
       {rows?.map((d) => {
         const reviewers = [...d.person, ...d.teams];
         return (
@@ -58,6 +58,11 @@ export const PullRequests = ({ onlyPersonal }: { onlyPersonal: boolean }) => {
           </div>
         );
       })}
+      {loading && (
+        <div style={{ justifyContent: "center", display: "flex", height: 60 }}>
+          <Loader />
+        </div>
+      )}
     </>
   );
 };

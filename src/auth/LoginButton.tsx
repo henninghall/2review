@@ -17,7 +17,7 @@ export const LoginButton = () => {
     >
       <Icon src={github} alt="github" />
       <span>Sign in with GitHub</span>
-      {isAuthorizing && <Loader />}
+      {isAuthorizing && <Loader small />}
     </Button>
   );
 };

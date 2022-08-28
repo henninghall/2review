@@ -16,7 +16,7 @@ export const SettingsModal = () => {
       style={{
         overlay: { backgroundColor: "rgba(0,0,0,0.5)" },
         content: {
-          backgroundColor: colors.gray400,
+          backgroundColor: colors.gray600,
           border: 0,
           boxShadow: "0 2px 4px #000",
           maxWidth: 500,
