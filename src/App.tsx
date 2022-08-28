@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import { LoginButton } from "./auth/LoginButton";
+import { LoginButton } from "./auth/Buttons";
 import { state } from "./auth/state";
 import { useIsAuthorizing } from "./auth/useIsAutherizing";
 import { useToken } from "./auth/useToken";
 import { fetchJson } from "./fetchjson";
 import { PullRequests } from "./PullRequests";
 import { useShowSettings } from "./settings/useShowSettings";
-import { SettingsButton } from "./SettingsButtont";
+import { SettingsButton } from "./SettingsButton";
 import { SettingsModal } from "./SettingsModal";
 import { Checkbox } from "./ui/Checkbox";
 import { useLocalStorage } from "./useLocalStorage";

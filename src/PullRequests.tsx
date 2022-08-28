@@ -1,4 +1,6 @@
+import styled from "styled-components";
 import pr from "./svg/pr.svg";
+import { colors, highlights } from "./ui/colors";
 import { Loader } from "./ui/Loader";
 import { usePullRequests } from "./usePullRequests";
 const size = 30;
@@ -13,23 +15,7 @@ export const PullRequests = ({ onlyPersonal }: { onlyPersonal: boolean }) => {
       {rows?.map((d) => {
         const reviewers = [...d.person, ...d.teams];
         return (
-          <div
-            key={d.html_url}
-            style={{
-              backgroundColor: "#363636",
-              borderRadius: 10,
-              padding: "3vh 4vw",
-              boxShadow: "0 2px 5px #111",
-              cursor: "pointer",
-              display: "flex",
-              flexWrap: "wrap",
-              alignItems: "center",
-              gap: 20,
-            }}
-            onClick={() => {
-              window.open(d.html_url);
-            }}
-          >
+          <Row href={d.html_url} key={d.html_url}>
             <img
               src={pr}
               alt="open pull request"
@@ -44,18 +30,11 @@ export const PullRequests = ({ onlyPersonal }: { onlyPersonal: boolean }) => {
                 flexDirection: "column",
               }}
             >
-              {reviewers.map((r) => {
-                return (
-                  <li
-                    key={r}
-                    style={{ margin: 0, marginBottom: 4, fontSize: 16 }}
-                  >
-                    {r}
-                  </li>
-                );
-              })}
+              {reviewers.map((reviewer) => (
+                <Reviewer key={reviewer}>{reviewer}</Reviewer>
+              ))}
             </ul>
-          </div>
+          </Row>
         );
       })}
       {loading && (
@@ -66,3 +45,24 @@ export const PullRequests = ({ onlyPersonal }: { onlyPersonal: boolean }) => {
     </>
   );
 };
+
+const Row = styled.a`
+  background-color: ${colors.gray400};
+  border-radius: 10px;
+  padding: 3vh 4vw;
+  box-shadow: 0 2px 5px #111;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  :hover {
+    ${highlights}
+  }
+`;
+
+const Reviewer = styled.li`
+  margin: 0;
+  margin-bottom: 4px;
+  font-size: 0.8em;
+`;
