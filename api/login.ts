@@ -28,8 +28,8 @@ async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const loginResponse = await login(body);
     const params = new URLSearchParams(loginResponse);
-    console.log(loginResponse);
-    const error = params.get("error", req.body);
+    console.log(loginResponse, body);
+    const error = params.get("error");
     if (error) throw Error(error);
 
     return res.status(200).json({
