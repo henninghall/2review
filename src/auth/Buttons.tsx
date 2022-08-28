@@ -11,7 +11,7 @@ export const LoginButton = () => {
   const [isAuthorizing, setIsAuth] = useIsAuthorizing();
   return (
     <Button
-      loading={isAuthorizing}
+      $loading={isAuthorizing}
       onClick={() => {
         setIsAuth(true);
         window.location.href = authorizeUrl;
@@ -47,7 +47,7 @@ const Icon = styled.img`
   height: ${size}px;
 `;
 
-const Button = styled.button<{ loading?: boolean }>`
+const Button = styled.button<{ $loading?: boolean }>`
   height: 3rem;
   font-size: 1em;
   padding: 0 0.7rem;
@@ -57,7 +57,7 @@ const Button = styled.button<{ loading?: boolean }>`
   gap: 1rem;
   align-items: center;
   border: 1px solid ${colors.gray200};
-  ${({ loading }) => ({ ...(loading ? highlights : defaults) })}
+  ${({ $loading }) => ({ ...($loading ? highlights : defaults) })}
   :hover {
     ${highlights}
   }

@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import styled from "styled-components";
 import { LoginButton } from "./auth/Buttons";
 import { state } from "./auth/state";
 import { useIsAuthorizing } from "./auth/useIsAutherizing";
@@ -8,6 +9,7 @@ import { PullRequests } from "./PullRequests";
 import { useShowSettings } from "./settings/useShowSettings";
 import { SettingsButton } from "./SettingsButton";
 import { SettingsModal } from "./SettingsModal";
+import { SignInOverlay } from "./SignInOverlay";
 import { Checkbox } from "./ui/Checkbox";
 import { useLocalStorage } from "./useLocalStorage";
 
@@ -84,16 +86,21 @@ export function App() {
             gap: 20,
             justifyContent: "space-between",
             alignItems: "flex-end",
+            marginBottom: "1rem",
           }}
         >
           <h2 style={{ margin: 0 }}>Pull requests awaiting your review</h2>
-          <Checkbox
-            label="Personal"
-            checked={onlyPersonal}
-            onChange={setOnlyPersonal}
-          />
+          {token && (
+            <Checkbox
+              label="Personal"
+              checked={onlyPersonal}
+              onChange={setOnlyPersonal}
+            />
+          )}
         </div>
-        <PullRequests onlyPersonal={onlyPersonal} />
+
+        <PullRequests onlyPersonal={onlyPersonal} preview={!token} />
+        {!token && <SignInOverlay />}
         <div
           style={{
             display: "flex",
@@ -101,12 +108,10 @@ export function App() {
             margin: 20,
           }}
         >
-          {token ? (
+          {token && (
             <SettingsButton
               onClick={() => setShowSettings((shown) => !shown)}
             />
-          ) : (
-            <LoginButton />
           )}
         </div>
       </div>

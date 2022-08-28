@@ -5,6 +5,8 @@ import { useToken } from "./auth/useToken";
 const pages = 1;
 const per_page = 50;
 
+export type PullRequest = ReturnType<typeof usePullRequests>["data"][0];
+
 export const usePullRequests = () => {
   const [token] = useToken();
   const [loading, setLoading] = useState(false);
