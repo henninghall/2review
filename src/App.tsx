@@ -50,6 +50,7 @@ export function App() {
         if (response.access_token) setToken(response.access_token);
       })
       .finally(() => {
+        window.location.href = window.location.origin;
         setIsAuth(false);
       });
   }, [setIsAuth, setToken]);
