@@ -4,15 +4,21 @@ import pr from "./svg/pr.svg";
 import { colors, highlights } from "./ui/colors";
 import { PullRequest as PullRequestType } from "./usePullRequests";
 import Skeleton from "react-loading-skeleton";
+import React, { useRef } from "react";
 
 type Props = {
   pullRequest?: PullRequestType;
   loading: boolean;
   preview: boolean;
+  index: number;
 };
 
-export const PullRequest = (props: Props) => {
+const lenghts = [3, 5, 9, 1, 6, 7, 2, 4, 8, 0];
+
+export const PullRequest = React.memo((props: Props) => {
   const { loading, pullRequest, preview } = props;
+  const percent = 60 + (40 * lenghts[props.index]) / 10;
+
   return (
     <Row
       href={pullRequest?.html_url ?? undefined}
@@ -24,7 +30,7 @@ export const PullRequest = (props: Props) => {
         {pullRequest?.title ? (
           pullRequest.title
         ) : (
-          <Skeleton width={"90%"} enableAnimation={loading} />
+          <Skeleton width={`${percent}%`} enableAnimation={loading} />
         )}
       </PrTitle>
       <Reviewers
@@ -36,7 +42,7 @@ export const PullRequest = (props: Props) => {
       />
     </Row>
   );
-};
+});
 
 const size = 30;
 

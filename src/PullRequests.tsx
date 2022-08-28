@@ -14,8 +14,9 @@ export const PullRequests = ({ onlyPersonal, preview }: Props) => {
 
   return (
     <>
-      {pullRequests?.map((d) => (
+      {pullRequests?.map((d, index) => (
         <PullRequest
+          index={index}
           key={d.html_url}
           pullRequest={d}
           loading={false}
@@ -24,7 +25,7 @@ export const PullRequests = ({ onlyPersonal, preview }: Props) => {
       ))}
       {(preview || loading) &&
         Array.from({ length: 7 }).map((_, i) => (
-          <PullRequest key={i} loading={loading} preview={preview} />
+          <PullRequest key={i} loading={loading} preview={preview} index={i} />
         ))}
     </>
   );

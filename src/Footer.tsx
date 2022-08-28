@@ -4,8 +4,10 @@ import { colors } from "./ui/colors";
 export const Footer = () => {
   return (
     <Container>
+      <A href="https://github.com/apps/2review-app/installations/new">
+        Installation
+      </A>
       <A href="https://github.com/henninghall/2review">Github repo</A>
-      <A href="https://github.com/apps/2review-app">Installation</A>
     </Container>
   );
 };
