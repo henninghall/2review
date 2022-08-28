@@ -2,9 +2,10 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import fetch from "node-fetch";
 const clientId = "Iv1.395428b4814a0264";
 
-interface Params {
+interface Body {
   code: string;
   state: string;
+  redirect_uri: string;
 }
 
 const allowCors = (fn) => async (req: VercelRequest, res: VercelResponse) => {
@@ -23,7 +24,7 @@ const allowCors = (fn) => async (req: VercelRequest, res: VercelResponse) => {
 };
 
 async function handler(req: VercelRequest, res: VercelResponse) {
-  const body: Params = JSON.parse(req.body);
+  const body: Body = JSON.parse(req.body);
   try {
     const loginResponse = await login(body);
     const params = new URLSearchParams(loginResponse);
@@ -42,33 +43,30 @@ async function handler(req: VercelRequest, res: VercelResponse) {
 }
 export default allowCors(handler);
 
-const login = async ({ state, code }: Params) => {
-  if (!process.env.REACT_APP_CLIENT_SECRET)
-    throw Error("Missing client secret");
+const login = async ({ state, code, redirect_uri }: Body) => {
+  if (!process.env.CLIENT_SECRET) throw Error("Missing client secret");
 
-  const body = new URLSearchParams({
-    client_id: clientId,
-    code,
-    client_secret: process.env.REACT_APP_CLIENT_SECRET,
-    redirect_uri: "https://2review.app",
-    state,
-  });
-
-  const response = await fetchJson<string>(
+  const response = await fetchText<string>(
     "https://github.com/login/oauth/access_token",
     {
       method: "post",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body,
+      body: new URLSearchParams({
+        client_id: clientId,
+        code,
+        client_secret: process.env.CLIENT_SECRET,
+        redirect_uri,
+        state,
+      }),
     }
   );
 
   return response;
 };
 
-async function fetchJson<T>(...params: Parameters<typeof fetch>) {
+async function fetchText<T>(...params: Parameters<typeof fetch>) {
   const response = await fetch(...params);
   const data: T = await response.text();
   return data;

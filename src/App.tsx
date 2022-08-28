@@ -19,19 +19,17 @@ interface LoginResponse {
 export function App() {
   const [data, setData] = useState<Awaited<ReturnType<typeof fetchData>>>();
   const [token, setToken] = useLocalStorage<string>("token", "");
-  const [username, setUsername] = useLocalStorage<string>("username", "");
   const [onlyPersonal, setOnlyPersonal] = useLocalStorage<boolean>(
     "onlyPersonal",
     false
   );
-  const hasCompletedSetup = token && username;
+  const hasCompletedSetup = token;
   const [showSettings, setShowSettings] = useState<boolean>(!hasCompletedSetup);
 
   useEffect(() => {
     if (!token) return;
-    if (!username) return;
-    fetchData({ token, username }).then(setData);
-  }, [token, username]);
+    fetchData({ token }).then(setData);
+  }, [token]);
 
   useEffect(() => {
     const currentSearchParams = new URLSearchParams(window.location.search);
@@ -45,10 +43,14 @@ export function App() {
 
     fetchJson<LoginResponse>(`https://2review.app/api/login`, {
       method: "post",
-      body: JSON.stringify({ state, code }),
+      body: JSON.stringify({
+        state,
+        code,
+        redirect_uri: window.location.origin,
+      }),
     }).then((response) => {
       console.log(response);
-      if (response) setToken(response.access_token);
+      if (response.access_token) setToken(response.access_token);
     });
   }, [setToken]);
 
@@ -93,12 +95,6 @@ export function App() {
             gridTemplateColumns: "1fr",
           }}
         >
-          <Input
-            label="Github username"
-            placeholder="Username"
-            value={username}
-            onChange={setUsername}
-          />
           <Input
             label="Github token"
             placeholder="Token"

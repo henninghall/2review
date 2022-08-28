@@ -3,17 +3,13 @@ import { Octokit } from "octokit";
 const pages = 1;
 const per_page = 50;
 
-export const fetchData = async ({
-  token,
-  username,
-}: {
-  token: string;
-  username: string;
-}) => {
+export const fetchData = async ({ token }: { token: string }) => {
   const octokit = new Octokit({ auth: token });
 
+  const { login } = (await octokit.rest.users.getAuthenticated()).data;
+
   const pulls = Array.from({ length: pages }).map((_, i) => {
-    const filters = ["is:pr", `review-requested:${username}`, "is:open"];
+    const filters = ["is:pr", `review-requested:${login}`, "is:open"];
 
     return octokit.rest.search.issuesAndPullRequests({
       q: filters.join(" "),
@@ -52,7 +48,7 @@ export const fetchData = async ({
     if (!requested_teams) throw Error("Unexpected requested teams format");
     const teams = requested_teams.map((team) => team.name);
     const person = requested_reviewers
-      .filter((r) => r.login === username)
+      .filter((r) => r.login === login)
       .map((p) => p.login);
 
     return { person, teams, title, html_url, updated_at };
