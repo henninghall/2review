@@ -26,6 +26,7 @@ const A = styled.a.attrs({
   target: "_blank",
   rel: "noreferrer",
 })`
+  padding: 1.5rem;
   cursor: pointer;
   :hover {
     color: ${colors.gray100};
@@ -37,8 +38,9 @@ const Container = styled.div`
   height: 100%;
   margin-top: auto;
   justify-content: center;
-  gap: 2rem;
-  padding: 2rem;
+  padding: 1rem;
+  padding-bottom: 2rem;
   color: ${colors.gray200};
   align-items: flex-end;
+  flex-wrap: wrap;
 `;

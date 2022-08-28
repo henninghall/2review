@@ -3,19 +3,16 @@ import { useLogin } from "./auth/useLogin";
 import { useToken } from "./auth/useToken";
 import { Footer } from "./Footer";
 import { HelpModal, InstallationModal } from "./HelpModal";
+import { PersonalToggle } from "./PersonalToggle";
 import { PullRequests } from "./PullRequests";
 import { SettingsModal } from "./SettingsModal";
 import { SignInOverlay } from "./SignInOverlay";
-import { Checkbox } from "./ui/Checkbox";
 import { colors } from "./ui/colors";
+import { Toggle } from "./ui/Toggle";
 import { useLocalStorage } from "./useLocalStorage";
 
 export function App() {
   const [token] = useToken();
-  const [onlyPersonal, setOnlyPersonal] = useLocalStorage<boolean>(
-    "onlyPersonal",
-    false
-  );
 
   useLogin();
 
@@ -23,22 +20,16 @@ export function App() {
     <Container>
       <Content>
         <Header>
-          <div style={{ gap: 10, display: "flex", flexDirection: "column" }}>
+          <HeaderText>
             <h1>Pull requests awaiting your review</h1>
             <p style={{ color: colors.gray200 }}>
               Following pull requests are assigned to you or your team and are
               waiting for review.
             </p>
-          </div>
-          {token && (
-            <Checkbox
-              label="Personal"
-              checked={onlyPersonal}
-              onChange={setOnlyPersonal}
-            />
-          )}
+          </HeaderText>
+          <PersonalToggle />
         </Header>
-        <PullRequests onlyPersonal={onlyPersonal} preview={!token} />
+        <PullRequests preview={!token} />
         {!token && <SignInOverlay />}
         <Footer />
       </Content>
@@ -72,21 +63,16 @@ const Content = styled.div({
 const Header = styled.div({
   display: "flex",
   flexDirection: "row",
+  flexWrap: "wrap",
   gap: 20,
   justifyContent: "space-between",
   alignItems: "flex-end",
   marginBottom: "1rem",
 });
 
-// const SettingsButtonContainer = styled.div({
-//   display: "flex",
-//   justifyContent: "center",
-//   margin: 20,
-// });
-// {token && (
-//   <SettingsButtonContainer>
-//     <SettingsButton
-//       onClick={() => setShowSettings((shown) => !shown)}
-//     />
-//   </SettingsButtonContainer>
-// )}
+const HeaderText = styled.div({
+  gap: 10,
+  display: "flex",
+  flexDirection: "column",
+  maxWidth: 500,
+});

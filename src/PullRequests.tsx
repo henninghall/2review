@@ -1,13 +1,15 @@
 import { PullRequest } from "./PullRequest";
+import { usePersonalOnly } from "./usePersonalOnly";
 import { usePullRequests } from "./usePullRequests";
 
 interface Props {
-  onlyPersonal: boolean;
   preview: boolean;
 }
 
-export const PullRequests = ({ onlyPersonal, preview }: Props) => {
+export const PullRequests = ({ preview }: Props) => {
   const { data, loading } = usePullRequests();
+  const [onlyPersonal, setOnlyPersonal] = usePersonalOnly();
+
   const pullRequests = data?.filter((pr) =>
     onlyPersonal ? pr.person.length : true
   );
