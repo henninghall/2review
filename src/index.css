@@ -42,3 +42,7 @@ a:link, a:visited, a:hover, a:active {
   color: inherit;
   text-decoration: none;
 }
+
+h1 {
+  font-size: 1.7rem;
+}

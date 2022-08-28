@@ -34,7 +34,7 @@ const Label = styled.label`
 `;
 
 const StyledInput = styled.input`
-  background-color: ${colors.gray400};
+  background-color: ${colors.gray500};
   border-radius: 8px;
   padding: 7px 0px 7px 10px;
   color: ${colors.gray100};

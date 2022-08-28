@@ -12,7 +12,7 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <SkeletonTheme baseColor={colors.gray200} highlightColor={colors.gray300}>
+  <SkeletonTheme baseColor={colors.gray300} highlightColor={colors.gray400}>
     <RecoilRoot>
       <React.Suspense>
         <App />

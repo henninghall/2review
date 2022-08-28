@@ -7,7 +7,7 @@ import { authorizeUrl } from "./authorize";
 import { useIsAuthorizing } from "./useIsAutherizing";
 import { useToken } from "./useToken";
 
-export const LoginButton = () => {
+export const SignInButton = () => {
   const [isAuthorizing, setIsAuth] = useIsAuthorizing();
   return (
     <Button
@@ -24,7 +24,7 @@ export const LoginButton = () => {
   );
 };
 
-export const LogoutButton = () => {
+export const SignOutButton = () => {
   const [, setToken] = useToken();
   const [, setShowSettings] = useShowSettings();
   return (
@@ -56,7 +56,7 @@ const Button = styled.button<{ $loading?: boolean }>`
   display: flex;
   gap: 1rem;
   align-items: center;
-  border: 1px solid ${colors.gray200};
+  border: 1px solid ${colors.gray300};
   ${({ $loading }) => ({ ...($loading ? highlights : defaults) })}
   :hover {
     ${highlights}

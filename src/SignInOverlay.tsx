@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { LoginButton } from "./auth/Buttons";
+import { SignInButton } from "./auth/Buttons";
 
 const color = "rgba(26, 26, 26, 0.84)";
 const s1 = 90;
@@ -8,7 +8,7 @@ const s2 = 90;
 export const SignInOverlay = () => {
   return (
     <Overlay>
-      <LoginButton />
+      <SignInButton />
     </Overlay>
   );
 };

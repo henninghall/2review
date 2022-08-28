@@ -1,5 +1,5 @@
 import Modal from "react-modal";
-import { LogoutButton } from "./auth/Buttons";
+import { SignOutButton } from "./auth/Buttons";
 import { useToken } from "./auth/useToken";
 import { useShowSettings } from "./settings/useShowSettings";
 import { colors } from "./ui/colors";
@@ -42,7 +42,7 @@ export const SettingsModal = () => {
         onChange={setToken}
       />
       <div>
-        <LogoutButton />
+        <SignOutButton />
       </div>
     </Modal>
   );

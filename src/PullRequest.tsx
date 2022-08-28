@@ -51,7 +51,7 @@ const PrTitle = styled.h3`
 `;
 
 const Row = styled.a<{ $loading: boolean; preview: boolean }>`
-  background-color: ${colors.gray400};
+  background-color: ${colors.gray500};
   border-radius: 10px;
   padding: 3vh 4vw;
   box-shadow: 0 2px 5px #111;

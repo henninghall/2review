@@ -19,7 +19,7 @@ export const Reviewers = ({
           width={"80%"}
           height="0.8em"
           enableAnimation={loading}
-          baseColor={colors.gray300}
+          baseColor={colors.gray400}
         />
       ) : (
         reviewers.map((reviewer) => (

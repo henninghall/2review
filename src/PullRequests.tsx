@@ -23,8 +23,8 @@ export const PullRequests = ({ onlyPersonal, preview }: Props) => {
         />
       ))}
       {(preview || loading) &&
-        Array.from({ length: 7 }).map(() => (
-          <PullRequest loading={loading} preview={preview} />
+        Array.from({ length: 7 }).map((_, i) => (
+          <PullRequest key={i} loading={loading} preview={preview} />
         ))}
     </>
   );
