@@ -33,11 +33,11 @@ const fetchPrs = async ({ token }: { token: string }) => {
 
   const { login } = (await octokit.rest.users.getAuthenticated()).data;
   // const orgs2 = await octokit.rest.orgs.listMembershipsForAuthenticatedUser({});
-  const orgs2 = await octokit.rest.orgs.listMembershipsForAuthenticatedUser();
+  // const orgs2 = await octokit.rest.orgs.listMembershipsForAuthenticatedUser();
   // const orgs2 = await octokit.rest.orgs.listAppInstallations({
   //   org: "mindlercare",
   // });
-  console.log({ orgs2 });
+  // console.log({ orgs2 });
 
   const pulls = Array.from({ length: pages }).map((_, i) => {
     const filters = ["is:pr", `review-requested:${login}`, "is:open"];
