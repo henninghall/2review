@@ -14,7 +14,7 @@ interface LoginResponse {
 export const appType: "oauthApp" | "githubApp" = "oauthApp";
 
 export const useLogin = () => {
-  const [, setToken] = useToken();
+  const [token, setToken] = useToken();
   const [, setIsAuthorizing] = useIsAuthorizing();
 
   useEffect(() => {
@@ -41,7 +41,8 @@ export const useLogin = () => {
         if (response.access_token) setToken(response.access_token);
       })
       .finally(() => {
-        window.location.href = window.location.origin;
+        window.history.pushState({}, document.title, window.location.pathname);
+
         setIsAuthorizing(false);
       });
   }, [setIsAuthorizing, setToken]);
