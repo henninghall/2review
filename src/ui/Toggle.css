@@ -1,13 +1,4 @@
 
-form {
-	background-color: #fff;
-	padding: 1em 2em;
-      }
-      
-      form > div + div {
-	margin: 2em 0 0 0;
-      }
-      
       
       .toggles [disabled] + label,
       .toggles [disabled]:hover + label {
@@ -30,6 +21,7 @@ form {
 	padding: 0.5em;
 	padding-left: 4em;
 	max-width: calc(100% - 2em);
+	cursor: pointer;
       }
       
       .toggles [type="checkbox"]:focus + label::before,

@@ -31,16 +31,9 @@ export const usePullRequests = () => {
 const fetchPrs = async ({ token }: { token: string }) => {
   const octokit = new Octokit({ auth: token });
 
-  const { login, ...rest } = (await octokit.rest.users.getAuthenticated()).data;
-  // const orgs2 = await octokit.rest.orgs.listMembershipsForAuthenticatedUser({});
-  // const orgs2 = await octokit.rest.orgs.
-  // const orgs2 = await octokit.rest.orgs.listMembershipsForAuthenticatedUser();
-  // const orgs2 = await octokit.rest.orgs.listAppInstallations({
-  //   org: "mindlercare",
-  // });
-  // console.log({ orgs2 });
+  const { login } = (await octokit.rest.users.getAuthenticated()).data;
 
-  const pulls = Array.from({ length: pages }).map((_, i) => {
+  const prPromises = Array.from({ length: pages }).map((_, i) => {
     const filters = ["is:pr", `review-requested:${login}`, "is:open"];
 
     return octokit.rest.search.issuesAndPullRequests({
@@ -50,13 +43,13 @@ const fetchPrs = async ({ token }: { token: string }) => {
     });
   });
 
-  const result1 = await Promise.all(pulls);
+  const prs = await Promise.all(prPromises);
 
-  const allPrs = result1
+  const flattenPrs = prs
     .map((r) => r.data.items.map((i) => i.pull_request))
     .flat();
 
-  const promises = allPrs.map((pr) => {
+  const reviewerPromises = flattenPrs.map((pr) => {
     if (!pr || !pr.url) throw Error("Not a PR");
     const data = pr.url.split("/").reverse();
     const pull_number = parseInt(data[0]);
@@ -65,9 +58,9 @@ const fetchPrs = async ({ token }: { token: string }) => {
     return octokit.rest.pulls.get({ pull_number, owner, repo });
   });
 
-  const prs = await Promise.all(promises);
+  const rawPrWithReviewers = await Promise.all(reviewerPromises);
 
-  const returnit = prs.map((pr) => {
+  const prsWithReviewers = rawPrWithReviewers.map((pr) => {
     if (!pr) throw Error("Not a PR");
     const {
       requested_reviewers,
@@ -85,5 +78,5 @@ const fetchPrs = async ({ token }: { token: string }) => {
 
     return { person, teams, title, html_url, updated_at };
   });
-  return returnit;
+  return prsWithReviewers;
 };
