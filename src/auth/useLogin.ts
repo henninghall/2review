@@ -11,7 +11,8 @@ interface LoginResponse {
   refresh_token_expires_in: number;
 }
 
-export const appType: "oauthApp" | "githubApp" = "oauthApp";
+export const appType: "oauthApp" | "githubApp" = "githubApp";
+// export const appType: "oauthApp" | "githubApp" = "oauthApp";
 
 export const useLogin = () => {
   const [token, setToken] = useToken();
