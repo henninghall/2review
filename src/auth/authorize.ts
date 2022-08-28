@@ -10,5 +10,6 @@ export const authorizeUrl = (() => {
   login.searchParams.append("redirect_uri", window.location.origin);
   login.searchParams.append("state", state);
   login.searchParams.append("allow_signup", "false");
+  login.searchParams.append("scopes", "read:org	repo");
   return login.href;
 })();
