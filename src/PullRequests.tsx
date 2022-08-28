@@ -11,7 +11,7 @@ export const PullRequests = ({ preview }: Props) => {
   const { data, loading } = usePullRequests();
   const [onlyPersonal] = usePersonalOnly();
 
-  const pullRequests = ([] as any[]).filter((pr) =>
+  const pullRequests = data.filter((pr) =>
     onlyPersonal ? pr.person.length : true
   );
 
