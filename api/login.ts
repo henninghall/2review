@@ -8,7 +8,7 @@ interface Body {
   redirect_uri: string;
 }
 
-const allowCors = (fn) => async (req: VercelRequest, res: VercelResponse) => {
+const withCors = (fn) => async (req: VercelRequest, res: VercelResponse) => {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -41,7 +41,7 @@ async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: e.message });
   }
 }
-export default allowCors(handler);
+export default withCors(handler);
 
 const login = async ({ state, code, redirect_uri }: Body) => {
   if (!process.env.CLIENT_SECRET) throw Error("Missing client secret");
