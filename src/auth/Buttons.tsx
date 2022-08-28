@@ -47,7 +47,7 @@ const Icon = styled.img`
   height: ${size}px;
 `;
 
-const Button = styled.button<{ $loading?: boolean }>`
+export const Button = styled.button<{ $loading?: boolean }>`
   height: 3rem;
   font-size: 1em;
   padding: 0 0.7rem;

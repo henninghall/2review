@@ -11,6 +11,15 @@ body {
   color: #B5B5B5;
 }
 
+html, body, #root {
+  height: 100%;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+ }
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -35,7 +44,7 @@ ul {
   padding-left: 0.8em;
 }
 
-h1,h2,h3,h4,h5,h6 {margin: 0  }
+h1,h2,h3,h4,h5,h6,p {margin: 0  }
 
 
 a:link, a:visited, a:hover, a:active {
@@ -46,3 +55,5 @@ a:link, a:visited, a:hover, a:active {
 h1 {
   font-size: 1.7rem;
 }
+
+p {line-height: 1.45em;}
