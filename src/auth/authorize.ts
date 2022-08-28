@@ -12,7 +12,8 @@ export const authorizeUrl = (() => {
   login.searchParams.append("allow_signup", "false");
   login.searchParams.append(
     "scope",
-    "read:org repo read:project notifications repo:status repo_deployment public_repo repo:invite security_events"
+    "read:org read:project"
+    // "read:org repo read:project notifications repo:status repo_deployment public_repo repo:invite security_events"
   );
   return login.href;
 })();
