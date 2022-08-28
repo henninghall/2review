@@ -7,5 +7,6 @@ Shows pull requests waiting on your review.
 - Filter option to only show personal assigned PR's.
 - Supports Github 
 
+<hr />
 
-
+<img width="845" alt="Screenshot 2022-08-28 at 18 56 37" src="https://user-images.githubusercontent.com/1652607/187085660-88acbbe6-1b65-4222-a558-829b5ed44363.png">
