@@ -1,5 +1,6 @@
 import { Octokit } from "octokit";
 import { useEffect, useState } from "react";
+import { useIsAuthorizing } from "./auth/useIsAutherizing";
 import { useRefresh } from "./auth/useRefresh";
 import { useToken } from "./auth/useToken";
 
@@ -11,6 +12,7 @@ export type PullRequest = ReturnType<typeof usePullRequests>["data"][0];
 export const usePullRequests = () => {
   const [token] = useToken();
   const refreshAuth = useRefresh();
+  const [, setIsAuthorizing] = useIsAuthorizing();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<undefined | Error>();
   const [data, setData] = useState<Awaited<ReturnType<typeof fetchPrs>>>([]);
@@ -26,21 +28,24 @@ export const usePullRequests = () => {
       try {
         const data = await fetchPrs({ token });
         setData(data);
+        setLoading(false);
       } catch (error: any) {
         if (error.status === 401) {
           try {
+            setIsAuthorizing(true);
             await refreshAuth();
           } catch (error: any) {
             setError(error);
+          } finally {
+            setIsAuthorizing(false);
           }
-          return;
+        } else {
+          setError(error);
+          setLoading(false);
         }
-        setError(error);
-      } finally {
-        setLoading(false);
       }
     })();
-  }, [refreshAuth, token]);
+  }, [refreshAuth, setIsAuthorizing, token]);
 
   return { data, error, loading };
 };
