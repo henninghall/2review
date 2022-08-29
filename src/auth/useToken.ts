@@ -4,7 +4,7 @@ import { persistAtom } from "../persistAtom";
 const tokenState = atom<string | undefined>({
   key: "token",
   default: undefined,
-  effects_UNSTABLE: [persistAtom],
+  effects: [persistAtom],
 });
 
 export const useToken = () => {

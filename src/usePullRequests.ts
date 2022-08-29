@@ -10,6 +10,7 @@ export type PullRequest = ReturnType<typeof usePullRequests>["data"][0];
 export const usePullRequests = () => {
   const [token] = useToken();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<undefined | Error>();
   const [data, setData] = useState<Awaited<ReturnType<typeof fetchPrs>>>([]);
 
   useEffect(() => {
@@ -18,14 +19,14 @@ export const usePullRequests = () => {
       return;
     }
     setLoading(true);
+    setError(undefined);
     fetchPrs({ token })
       .then(setData)
-      .finally(() => {
-        setLoading(false);
-      });
+      .catch(setError)
+      .finally(() => setLoading(false));
   }, [token]);
 
-  return { data, loading };
+  return { data, error, loading };
 };
 
 const fetchPrs = async ({ token }: { token: string }) => {
