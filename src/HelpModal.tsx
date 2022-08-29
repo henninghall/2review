@@ -1,10 +1,8 @@
-import styled from "styled-components";
-import { Button } from "./auth/Buttons";
 import { installationUrl } from "./Footer";
 import { Modal } from "./Modal";
 import { useShowHelp } from "./settings/useShowHelp";
 import { useShowInstall } from "./settings/useShowInstall";
-import github from "./svg/github.svg";
+import { GitHubButton } from "./ui/GithubButton";
 
 export const HelpModal = () => {
   const [show, setShow] = useShowHelp();
@@ -43,26 +41,11 @@ const InstallModal = ({
         maintainers to approve the installation.
       </p>
       <div>
-        <InstallAppButton />
+        <GitHubButton
+          onClick={() => window.open(installationUrl)}
+          text="Install app"
+        />
       </div>
     </Modal>
   );
 };
-
-export const InstallAppButton = () => (
-  <Button
-    onClick={() => {
-      window.open(installationUrl);
-    }}
-  >
-    <Icon src={github} alt="github" />
-    <span>Install app</span>
-  </Button>
-);
-
-const size = 25;
-
-const Icon = styled.img`
-  width: ${size}px;
-  height: ${size}px;
-`;

@@ -1,4 +1,4 @@
-import { SignOutButton } from "./auth/Buttons";
+import { SignOutButton } from "./auth/SignOutButton";
 import { useToken } from "./auth/useToken";
 import { Modal } from "./Modal";
 import { useShowSettings } from "./settings/useShowSettings";

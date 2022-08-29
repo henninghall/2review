@@ -19,7 +19,7 @@ export function Input({
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        size={40}
+        size={30}
       />
     </Label>
   );

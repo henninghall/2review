@@ -22,6 +22,7 @@ export const PullRequest = React.memo((props: Props) => {
   return (
     <Card
       href={pullRequest?.html_url ?? undefined}
+      target="_blank"
       $loading={loading}
       preview={preview}
     >

@@ -13,8 +13,11 @@ export const Reviewers = ({
   return (
     <Ul>
       {loading || preview
-        ? Array.from({ length: 2 }).map(() => (
-            <div style={{ height: "0.7em", backgroundColor: colors.gray400 }} />
+        ? Array.from({ length: 2 }).map((_, i) => (
+            <div
+              key={i}
+              style={{ height: "0.7em", backgroundColor: colors.gray400 }}
+            />
           ))
         : reviewers.map((reviewer) => (
             <Reviewer key={reviewer}>{reviewer}</Reviewer>

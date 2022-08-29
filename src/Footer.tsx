@@ -16,12 +16,14 @@ export const Footer = () => {
 
   return (
     <Container>
-      {token && (
-        <A onClick={() => setShowHelp(true)}>Why don't all PR's show up?</A>
-      )}
-      <A onClick={() => setShowInstall(true)}>Installation</A>
-      <A href="https://github.com/henninghall/2review">Github repo</A>
-      {token && <A onClick={() => setShowSettings(true)}>Settings</A>}
+      <Links>
+        {token && (
+          <A onClick={() => setShowHelp(true)}>Why don't all PR's show up?</A>
+        )}
+        <A onClick={() => setShowInstall(true)}>Installation</A>
+        <A href="https://github.com/henninghall/2review">Github repo</A>
+        {token && <A onClick={() => setShowSettings(true)}>Settings</A>}
+      </Links>
     </Container>
   );
 };
@@ -37,14 +39,18 @@ const A = styled.a.attrs({
   }
 `;
 
+const Links = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+`;
+
 const Container = styled.div`
   display: flex;
   height: 100%;
-  margin-top: auto;
-  justify-content: center;
   padding: 1rem;
   padding-bottom: 2rem;
   color: ${colors.gray200};
   align-items: flex-end;
-  flex-wrap: wrap;
+  justify-content: center;
 `;
