@@ -28,7 +28,11 @@ export const usePullRequests = () => {
         setData(data);
       } catch (error: any) {
         if (error.status === 401) {
-          refreshAuth();
+          try {
+            await refreshAuth();
+          } catch (error: any) {
+            setError(error);
+          }
           return;
         }
         setError(error);
