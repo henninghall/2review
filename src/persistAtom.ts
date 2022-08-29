@@ -15,7 +15,7 @@ export function persistAtom<T>({
   );
 
   onSet((newValue, _, isReset) => {
-    isReset
+    isReset || newValue == null
       ? localStorage.removeItem(key)
       : localStorage.setItem(key, JSON.stringify(newValue));
   });

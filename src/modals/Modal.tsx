@@ -1,6 +1,6 @@
 import { FC, ReactNode } from "react";
 import RnModal from "react-modal";
-import { colors } from "./ui/colors";
+import { colors } from "../ui/colors";
 
 export const Modal: FC<{
   title: string;

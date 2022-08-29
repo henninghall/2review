@@ -1,18 +1,19 @@
-import { useShowSettings } from "../settings/useShowSettings";
+import { useModal } from "../modals/useModal";
 import { GitHubButton } from "../ui/GithubButton";
+import { useRefreshToken } from "./useRefreshToken";
 import { useToken } from "./useToken";
 
 export const SignOutButton = () => {
   const [, setToken] = useToken();
-  const [, setRefreshToken] = useToken();
-  const [, setShowSettings] = useShowSettings();
+  const [, setRefreshToken] = useRefreshToken();
+  const [, showModal] = useModal();
   return (
     <GitHubButton
       text={"Sign out"}
       onClick={() => {
-        setToken("");
-        setRefreshToken("");
-        setShowSettings(false);
+        setToken(undefined);
+        setRefreshToken(undefined);
+        showModal(undefined);
       }}
     />
   );

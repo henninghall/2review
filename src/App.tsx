@@ -2,10 +2,9 @@ import styled from "styled-components";
 import { useLogin } from "./auth/useLogin";
 import { useToken } from "./auth/useToken";
 import { Footer } from "./Footer";
-import { HelpModal, InstallationModal } from "./HelpModal";
+import { Modals } from "./modals/CurrentModal";
 import { PersonalToggle } from "./PersonalToggle";
 import { PullRequests } from "./PullRequests";
-import { SettingsModal } from "./SettingsModal";
 import { SignInOverlay } from "./SignInOverlay";
 import { colors } from "./ui/colors";
 
@@ -31,9 +30,7 @@ export function App() {
         {!token && <SignInOverlay />}
         <Footer />
       </Content>
-      <HelpModal />
-      <InstallationModal />
-      <SettingsModal />
+      <Modals />
     </Container>
   );
 }

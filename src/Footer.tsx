@@ -1,45 +1,40 @@
 import styled from "styled-components";
 import { useToken } from "./auth/useToken";
-import { useShowHelp } from "./settings/useShowHelp";
-import { useShowInstall } from "./settings/useShowInstall";
-import { useShowSettings } from "./settings/useShowSettings";
+import { useModal } from "./modals/useModal";
 import { colors } from "./ui/colors";
+import { Link } from "./ui/Link";
 
 export const installationUrl =
   "https://github.com/apps/2review-app/installations/new";
 
 export const Footer = () => {
-  const [, setShowHelp] = useShowHelp();
-  const [, setShowInstall] = useShowInstall();
-  const [, setShowSettings] = useShowSettings();
+  const [, showModal] = useModal();
   const [token] = useToken();
 
   return (
     <Container>
       <Links>
         {token && (
-          <A onClick={() => setShowHelp(true)}>Why don't all PR's show up?</A>
+          <Link $padding onClick={() => showModal("help")}>
+            Why don't all PR's show up?
+          </Link>
         )}
-        <A onClick={() => setShowInstall(true)}>Installation</A>
-        <A href="https://github.com/henninghall/2review">Github repo</A>
-        {token && <A onClick={() => setShowSettings(true)}>Settings</A>}
+        <Link $padding onClick={() => showModal("install")}>
+          Installation
+        </Link>
+        <Link $padding href="https://github.com/henninghall/2review">
+          Github repo
+        </Link>
+        <Link $padding onClick={() => showModal("settings")}>
+          Settings
+        </Link>
       </Links>
     </Container>
   );
 };
 
-const A = styled.a.attrs({
-  target: "_blank",
-  rel: "noreferrer",
-})`
-  padding: 1.5rem;
-  cursor: pointer;
-  :hover {
-    color: ${colors.gray100};
-  }
-`;
-
 const Links = styled.div`
+  color: ${colors.gray200};
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -50,7 +45,6 @@ const Container = styled.div`
   height: 100%;
   padding: 1rem;
   padding-bottom: 2rem;
-  color: ${colors.gray200};
   align-items: flex-end;
   justify-content: center;
 `;

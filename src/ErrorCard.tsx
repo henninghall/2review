@@ -12,9 +12,9 @@ export const ErrorCard = ({ error }: { error: Error }) => {
         }}
       >
         <span>Something went wrong.</span>
-        <span style={{ fontSize: "0.8em" }}>
-          Error message: {error.message}
-        </span>
+        {error.message && (
+          <span style={{ fontSize: "0.8em" }}>{error.message}</span>
+        )}
       </div>
     </Card>
   );

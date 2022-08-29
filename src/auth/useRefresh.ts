@@ -7,12 +7,12 @@ import { useRefreshToken } from "./useRefreshToken";
 import { useToken } from "./useToken";
 
 export const useRefresh = () => {
-  const [, setToken] = useToken();
+  const [token, setToken] = useToken();
   const [refresh_token, setRefreshToken] = useRefreshToken();
 
   const refreshAuth = useCallback(async () => {
-    if (!refresh_token) {
-      throw Error("Unable to refresh without a refresh token");
+    if (!token || !refresh_token) {
+      throw Error("Unauthorized");
     }
     const body: RefreshBody = { refresh_token, type: appType };
     const response = await fetchJson<AuthResponse>(
@@ -26,7 +26,7 @@ export const useRefresh = () => {
       setToken(response.access_token);
       setRefreshToken(response.refresh_token);
     }
-  }, [refresh_token, setRefreshToken, setToken]);
+  }, [refresh_token, setRefreshToken, setToken, token]);
 
   return refreshAuth;
 };
