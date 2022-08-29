@@ -1,6 +1,6 @@
-import { state } from "./state";
+import { appType } from "./appType";
 import { githubAppClientId, oauthAppClientId } from "./clientId";
-import { appType } from "./useLogin";
+import { state } from "./state";
 
 const clientid = appType === "githubApp" ? githubAppClientId : oauthAppClientId;
 

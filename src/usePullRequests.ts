@@ -1,5 +1,6 @@
 import { Octokit } from "octokit";
 import { useEffect, useState } from "react";
+import { useRefresh } from "./auth/useRefresh";
 import { useToken } from "./auth/useToken";
 
 const pages = 1;
@@ -9,22 +10,33 @@ export type PullRequest = ReturnType<typeof usePullRequests>["data"][0];
 
 export const usePullRequests = () => {
   const [token] = useToken();
+  const refreshAuth = useRefresh();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<undefined | Error>();
   const [data, setData] = useState<Awaited<ReturnType<typeof fetchPrs>>>([]);
 
   useEffect(() => {
-    if (!token) {
-      setData([]);
-      return;
-    }
-    setLoading(true);
-    setError(undefined);
-    fetchPrs({ token })
-      .then(setData)
-      .catch(setError)
-      .finally(() => setLoading(false));
-  }, [token]);
+    (async () => {
+      if (!token) {
+        setData([]);
+        return;
+      }
+      setLoading(true);
+      setError(undefined);
+      try {
+        const data = await fetchPrs({ token });
+        setData(data);
+      } catch (error: any) {
+        if (error.status === 401) {
+          refreshAuth();
+          return;
+        }
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [refreshAuth, token]);
 
   return { data, error, loading };
 };

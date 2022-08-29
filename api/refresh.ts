@@ -2,14 +2,12 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { fetchText } from "../src/api/fetchText";
 import { getClientId, getClientSecret } from "../src/api/getEnvs";
 import { toJson } from "../src/api/toJson";
-import { LoginBody } from "../src/api/types";
+import { RefreshBody } from "../src/api/types";
 import { withCors } from "../src/api/withCors";
 
 async function handler(req: VercelRequest, res: VercelResponse) {
-  const body: LoginBody = JSON.parse(req.body);
+  const { refresh_token, type }: RefreshBody = JSON.parse(req.body);
   try {
-    const { state, code, redirect_uri, type } = body;
-
     const authResponse = await fetchText(
       "https://github.com/login/oauth/access_token",
       {
@@ -20,9 +18,8 @@ async function handler(req: VercelRequest, res: VercelResponse) {
         body: new URLSearchParams({
           client_id: getClientId({ type }),
           client_secret: getClientSecret({ type }),
-          code,
-          redirect_uri,
-          state,
+          refresh_token,
+          grant_type: "refresh_token",
         }),
       }
     );

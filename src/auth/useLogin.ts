@@ -1,21 +1,14 @@
 import { useEffect } from "react";
+import { LoginBody } from "../api/types";
 import { fetchJson } from "../fetchJsonx";
+import { appType } from "./appType";
 import { state } from "./state";
+import { AuthResponse } from "./types";
 import { useIsAuthorizing } from "./useIsAutherizing";
 import { useToken } from "./useToken";
 
-interface LoginResponse {
-  access_token: string;
-  expires_in: number;
-  refresh_token: string;
-  refresh_token_expires_in: number;
-}
-
-export const appType: "oauthApp" | "githubApp" = "githubApp";
-// export const appType: "oauthApp" | "githubApp" = "oauthApp";
-
 export const useLogin = () => {
-  const [token, setToken] = useToken();
+  const [, setToken] = useToken();
   const [, setIsAuthorizing] = useIsAuthorizing();
 
   useEffect(() => {
@@ -29,14 +22,16 @@ export const useLogin = () => {
     }
     setIsAuthorizing(true);
 
-    fetchJson<LoginResponse>(`https://2review.app/api/login`, {
+    const body: LoginBody = {
+      state,
+      code,
+      redirect_uri: window.location.origin,
+      type: appType,
+    };
+
+    fetchJson<AuthResponse>(`https://2review.app/api/login`, {
       method: "post",
-      body: JSON.stringify({
-        state,
-        code,
-        redirect_uri: window.location.origin,
-        type: appType,
-      }),
+      body: JSON.stringify(body),
     })
       .then((response) => {
         if (response.access_token) setToken(response.access_token);
