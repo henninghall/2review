@@ -10,8 +10,8 @@ export const InstallModal = () => {
   return (
     <>
       <p>
-        Your need to install this app on your organization(s) for it's PR's to
-        show up.
+        Your need to install this app on your organization for it's pull
+        requests to show up.
       </p>
       <p>
         If you don't have enough permissions, you can request the organization
