@@ -4,12 +4,14 @@ import { useToken } from "./useToken";
 
 export const SignOutButton = () => {
   const [, setToken] = useToken();
+  const [, setRefreshToken] = useToken();
   const [, setShowSettings] = useShowSettings();
   return (
     <GitHubButton
       text={"Sign out"}
       onClick={() => {
         setToken("");
+        setRefreshToken("");
         setShowSettings(false);
       }}
     />

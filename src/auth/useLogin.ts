@@ -5,10 +5,12 @@ import { appType } from "./appType";
 import { state } from "./state";
 import { AuthResponse } from "./types";
 import { useIsAuthorizing } from "./useIsAutherizing";
+import { useRefreshToken } from "./useRefreshToken";
 import { useToken } from "./useToken";
 
 export const useLogin = () => {
   const [, setToken] = useToken();
+  const [, setRefreshToken] = useRefreshToken();
   const [, setIsAuthorizing] = useIsAuthorizing();
 
   useEffect(() => {
@@ -34,12 +36,15 @@ export const useLogin = () => {
       body: JSON.stringify(body),
     })
       .then((response) => {
-        if (response.access_token) setToken(response.access_token);
+        if (response.access_token) {
+          setToken(response.access_token);
+          setRefreshToken(response.refresh_token);
+        }
       })
       .finally(() => {
         window.history.pushState({}, document.title, window.location.pathname);
 
         setIsAuthorizing(false);
       });
-  }, [setIsAuthorizing, setToken]);
+  }, [setIsAuthorizing, setRefreshToken, setToken]);
 };
