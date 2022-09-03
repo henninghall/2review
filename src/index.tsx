@@ -1,11 +1,12 @@
-import React, { FC } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
+import { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import { RecoilRoot } from "recoil";
 import { App } from "./App";
 import "./index.css";
-import "react-loading-skeleton/dist/skeleton.css";
+import { PullRequestProvider } from "./pull-request/PullRequestProvider";
 import reportWebVitals from "./reportWebVitals";
-import { SkeletonTheme } from "react-loading-skeleton";
 import { colors } from "./ui/colors";
 
 const root = ReactDOM.createRoot(
@@ -15,7 +16,9 @@ root.render(
   <SkeletonTheme baseColor={colors.gray300} highlightColor={colors.gray400}>
     <RecoilRoot>
       <React.Suspense>
-        <App />
+        <PullRequestProvider>
+          <App />
+        </PullRequestProvider>
       </React.Suspense>
     </RecoilRoot>
   </SkeletonTheme>

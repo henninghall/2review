@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { LoginBody } from "../api/types";
 import { fetchJson } from "../fetchJsonx";
 import { appType } from "./appType";
@@ -7,21 +7,30 @@ import { AuthResponse } from "./types";
 import { useIsAuthorizing } from "./useIsAutherizing";
 import { useRefreshToken } from "./useRefreshToken";
 import { useToken } from "./useToken";
+import { useUsername } from "./useUsername";
 
 export const useLogin = () => {
   const [, setToken] = useToken();
   const [, setRefreshToken] = useRefreshToken();
   const [, setIsAuthorizing] = useIsAuthorizing();
+  const { updateUsername } = useUsername();
 
-  useEffect(() => {
-    const currentSearchParams = new URLSearchParams(window.location.search);
-    const receivedState = currentSearchParams.get("state");
-    const code = currentSearchParams.get("code");
-    const shouldLogin = receivedState && code;
-    if (!shouldLogin) return;
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+  const receivedState = params.get("state");
+
+  const shouldLogin = useCallback(() => {
+    if (!receivedState) return false;
+    if (!state) return false;
     if (state !== receivedState) {
       throw Error("States not matching. Aborting auth.");
     }
+    return true;
+  }, [receivedState]);
+
+  const login = useCallback(async () => {
+    if (!code) return;
+
     setIsAuthorizing(true);
 
     const body: LoginBody = {
@@ -31,20 +40,28 @@ export const useLogin = () => {
       type: appType,
     };
 
-    fetchJson<AuthResponse>(`https://2review.app/api/login`, {
-      method: "post",
-      body: JSON.stringify(body),
-    })
-      .then((response) => {
-        if (response.access_token) {
-          setToken(response.access_token);
-          setRefreshToken(response.refresh_token);
+    try {
+      const response = await fetchJson<AuthResponse>(
+        `https://2review.app/api/login`,
+        {
+          method: "post",
+          body: JSON.stringify(body),
         }
-      })
-      .finally(() => {
-        window.history.pushState({}, document.title, window.location.pathname);
+      );
+      const { access_token, refresh_token } = response;
 
-        setIsAuthorizing(false);
-      });
-  }, [setIsAuthorizing, setRefreshToken, setToken]);
+      if (access_token) {
+        setToken(access_token);
+        setRefreshToken(refresh_token);
+        await updateUsername({ token: access_token });
+      }
+    } finally {
+      window.history.pushState({}, document.title, window.location.pathname);
+      setIsAuthorizing(false);
+    }
+  }, [code, setIsAuthorizing, setRefreshToken, setToken, updateUsername]);
+
+  useEffect(() => {
+    if (shouldLogin()) login();
+  }, [login, shouldLogin]);
 };

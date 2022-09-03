@@ -1,9 +1,15 @@
 import styled from "styled-components";
-import { colors } from "./colors";
+import { Color, colors } from "./colors";
 
-export const Loader = ({ small }: { small?: boolean }) => {
+export const Loader = ({
+  small,
+  color = "gray100",
+}: {
+  small?: boolean;
+  color?: Color;
+}) => {
   return (
-    <Container className="lds-ellipsis" scale={small ? 0.5 : 1}>
+    <Container className="lds-ellipsis" scale={small ? 0.5 : 1} color={color}>
       <div></div>
       <div></div>
       <div></div>
@@ -12,7 +18,7 @@ export const Loader = ({ small }: { small?: boolean }) => {
   );
 };
 
-const Container = styled.div<{ scale: number }>`
+const Container = styled.div<{ scale: number; color: Color }>`
   display: inline-block;
   position: relative;
   width: ${({ scale }) => 80 * scale}px;
@@ -23,7 +29,7 @@ const Container = styled.div<{ scale: number }>`
     width: ${({ scale }) => 13 * scale}px;
     height: ${({ scale }) => 13 * scale}px;
     border-radius: 50%;
-    background: ${colors.gray100};
+    background: ${({ color }) => colors[color]};
     animation-timing-function: cubic-bezier(0, 1, 1, 0);
   }
   div:nth-child(1) {

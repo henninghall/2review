@@ -1,3 +1,5 @@
+export type Color = keyof typeof colors;
+
 export const colors = {
   white: "#ddd",
   gray100: "#B5B5B5",

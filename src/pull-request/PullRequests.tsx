@@ -1,14 +1,14 @@
-import { EmptyCard } from "./EmptyCard";
-import { ErrorCard } from "./ErrorCard";
+import { useToken } from "../auth/useToken";
+import { EmptyCard } from "../EmptyCard";
+import { ErrorCard } from "../ErrorCard";
+import { SkeletonCards } from "../SkeletonCards";
+import { usePersonalOnly } from "../usePersonalOnly";
 import { PullRequest } from "./PullRequest";
-import { usePersonalOnly } from "./usePersonalOnly";
 import { usePullRequests } from "./usePullRequests";
 
-interface Props {
-  preview: boolean;
-}
-
-export const PullRequests = ({ preview }: Props) => {
+export const PullRequests = () => {
+  const [token] = useToken();
+  const preview = !token;
   const { loading, data, error } = usePullRequests();
   const [onlyPersonal] = usePersonalOnly();
 
@@ -17,20 +17,9 @@ export const PullRequests = ({ preview }: Props) => {
   );
 
   if (error) return <ErrorCard error={error} />;
-
-  if (preview || loading) {
-    return (
-      <>
-        {Array.from({ length: 7 }).map((_, i) => (
-          <PullRequest key={i} loading={loading} preview={preview} index={i} />
-        ))}
-      </>
-    );
-  }
-
-  if (pullRequests.length === 0) {
-    return <EmptyCard />;
-  }
+  if (preview) return <SkeletonCards loading={false} preview={true} />;
+  if (loading) return <SkeletonCards loading={true} preview={false} />;
+  if (pullRequests.length === 0) return <EmptyCard />;
 
   return (
     <>

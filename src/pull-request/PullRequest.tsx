@@ -1,10 +1,10 @@
 import React from "react";
 import Skeleton from "react-loading-skeleton";
 import styled from "styled-components";
-import { Card } from "./Card";
+import { Card } from "../Card";
 import { Reviewers } from "./Reviewers";
-import pr from "./svg/pr.svg";
-import { PullRequest as PullRequestType } from "./usePullRequests";
+import pr from "../svg/pr.svg";
+import { PullRequest as PullRequestType } from "./types";
 
 type Props = {
   pullRequest?: PullRequestType;
