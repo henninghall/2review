@@ -5,6 +5,7 @@ import { useLogin } from "../auth/useLogin";
 import { useUsername } from "../auth/useUsername";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
+import { isDev } from "../useDev";
 
 export const SettingsModal = () => {
   const username = useUsername();
@@ -23,25 +24,30 @@ export const SettingsModal = () => {
         }}
         onChange={setToken}
       />
-      <Button
-        onClick={() => {
-          github.token.set("x");
-          setToken("x");
-        }}
-        text="Invalidate auth token"
-      />
-      <Button
-        onClick={() => {
-          github.refreshToken.set("x");
-        }}
-        text="Invalidate refresh token"
-      />
-      <Button
-        onClick={() => {
-          username.clear();
-        }}
-        text="Remove username"
-      />
+      {isDev && (
+        <>
+          <Button
+            onClick={() => {
+              github.token.set("x");
+              setToken("x");
+            }}
+            text="Invalidate auth token"
+          />
+          <Button
+            onClick={() => {
+              github.refreshToken.set("x");
+            }}
+            text="Invalidate refresh token"
+          />
+          <Button
+            onClick={() => {
+              username.clear();
+            }}
+            text="Remove username"
+          />
+        </>
+      )}
+
       <div style={{ visibility: token ? "visible" : "hidden" }}>
         <SignOutButton />
       </div>
