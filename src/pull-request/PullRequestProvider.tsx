@@ -30,6 +30,7 @@ export const PullRequestProvider = ({ children }: Props) => {
       const data = await fetchPullRequests({ username });
       setData(data);
     } catch (error: any) {
+      if (error.status === 401) return; // ignore 401 (user will be logged out)
       setError(error);
     } finally {
       setFetching(false);

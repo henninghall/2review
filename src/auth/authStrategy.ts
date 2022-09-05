@@ -34,9 +34,9 @@ export const authStrategy = () => {
         return await request(request.endpoint);
       } catch (error: any) {
         if (error.status === 401) {
-          const refreshToken = github.refreshToken.get();
-          if (!refreshToken) throw error;
           try {
+            const refreshToken = github.refreshToken.get();
+            if (!refreshToken) throw error;
             await getNewToken({ refreshToken });
             addAuthHeader(request);
             return await request(request.endpoint);
