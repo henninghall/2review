@@ -1,6 +1,6 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { atom, useRecoilState } from "recoil";
-import { githubApi } from "../api/githubApi";
+import { GithubApi } from "../api/githubApi";
 import { persistAtom } from "../persistAtom";
 
 const tokenState = atom<string | undefined>({
@@ -11,14 +11,33 @@ const tokenState = atom<string | undefined>({
 
 export const useUsername = () => {
   const [username, setUsername] = useRecoilState(tokenState);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<unknown>(undefined);
 
-  const updateUsername = useCallback(
-    async ({ token }: { token: string }) => {
-      const { login } = await githubApi({ token }).getUser();
-      setUsername(login);
-    },
-    [setUsername]
-  );
+  const fetchUsername = useCallback(async () => {
+    setLoading(true);
+    try {
+      const { login } = await GithubApi.getUser();
+      return login;
+    } catch (e) {
+      setError(e);
+      throw e;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-  return { username, updateUsername };
+  const getUsername = useCallback(async () => {
+    if (username) return username;
+    const fetchedUsername = await fetchUsername();
+    setUsername(fetchedUsername);
+    return fetchedUsername;
+  }, [fetchUsername, setUsername, username]);
+
+  return {
+    loading,
+    error,
+    clear: () => setUsername(undefined),
+    getUsername,
+  };
 };

@@ -1,4 +1,4 @@
-import { Card } from "./Card";
+import { Card } from "./ui/Card";
 
 export const ErrorCard = ({ error }: { error: Error }) => {
   return (

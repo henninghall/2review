@@ -1,15 +1,23 @@
 import styled from "styled-components";
 import { Color, colors } from "./colors";
 
-export const Loader = ({
-  small,
-  color = "gray100",
-}: {
+const getScale = ({ small }: Props) => (small ? 0.5 : 1);
+const height = ({ scale }: { scale: number }) => 80 * scale;
+export const getHeight = ({ small }: Props) =>
+  height({ scale: getScale({ small }) });
+
+interface Props {
   small?: boolean;
   color?: Color;
-}) => {
+}
+
+export const Loader = ({ small, color = "gray100" }: Props) => {
   return (
-    <Container className="lds-ellipsis" scale={small ? 0.5 : 1} color={color}>
+    <Container
+      className="lds-ellipsis"
+      scale={getScale({ small })}
+      color={color}
+    >
       <div></div>
       <div></div>
       <div></div>
@@ -22,7 +30,7 @@ const Container = styled.div<{ scale: number; color: Color }>`
   display: inline-block;
   position: relative;
   width: ${({ scale }) => 80 * scale}px;
-  height: ${({ scale }) => 80 * scale}px;
+  height: ${height}px;
   div {
     position: absolute;
     top: ${({ scale }) => 33 * scale}px;

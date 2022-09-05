@@ -1,12 +1,12 @@
-import { useToken } from "./auth/useToken";
+import { useLogin } from "./auth/useLogin";
 import { Toggle } from "./ui/Toggle";
 import { usePersonalOnly } from "./usePersonalOnly";
 
 export const PersonalToggle = () => {
-  const [token] = useToken();
+  const { loggedIn } = useLogin();
   const [onlyPersonal, setOnlyPersonal] = usePersonalOnly();
 
-  if (!token) return null;
+  if (!loggedIn) return null;
   return (
     <Toggle
       label="Personal"

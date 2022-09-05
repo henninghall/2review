@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { PersonalToggle } from "./PersonalToggle";
 import { usePullRequests } from "./pull-request/usePullRequests";
 import { colors } from "./ui/colors";
-import { Loader } from "./ui/Loader";
+import { getHeight, Loader } from "./ui/Loader";
 
 export const Header = () => {
   const { fetching, loading } = usePullRequests();
@@ -24,12 +24,15 @@ export const Header = () => {
   );
 };
 
+const loaderHeight = getHeight({ small: true });
+
 const Right = styled.div`
   display: flex;
   align-items: flex-end;
   flex-wrap: wrap;
   gap: 15px;
   align-items: center;
+  min-height: ${loaderHeight}px;
   @media (min-width: 700px) {
     flex-direction: column-reverse;
     align-items: flex-end;

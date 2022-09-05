@@ -6,11 +6,13 @@ export function Input({
   onChange,
   label,
   placeholder,
+  onBlur,
 }: {
   label: string;
   value: string;
   placeholder: string;
   onChange: (v: string) => void;
+  onBlur?: () => void;
 }) {
   return (
     <Label>
@@ -20,6 +22,7 @@ export function Input({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         size={30}
+        onBlur={onBlur}
       />
     </Label>
   );

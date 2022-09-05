@@ -1,4 +1,4 @@
-import { useToken } from "../auth/useToken";
+import { useLogin } from "../auth/useLogin";
 import { EmptyCard } from "../EmptyCard";
 import { ErrorCard } from "../ErrorCard";
 import { SkeletonCards } from "../SkeletonCards";
@@ -7,8 +7,9 @@ import { PullRequest } from "./PullRequest";
 import { usePullRequests } from "./usePullRequests";
 
 export const PullRequests = () => {
-  const [token] = useToken();
-  const preview = !token;
+  const { loggedIn } = useLogin();
+  const preview = !loggedIn;
+
   const { loading, data, error } = usePullRequests();
   const [onlyPersonal] = usePersonalOnly();
 

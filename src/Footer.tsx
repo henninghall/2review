@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useToken } from "./auth/useToken";
+import { useLogin } from "./auth/useLogin";
 import { useModal } from "./modals/useModal";
 import { colors } from "./ui/colors";
 import { Link } from "./ui/Link";
@@ -9,12 +9,12 @@ export const installationUrl =
 
 export const Footer = () => {
   const [, showModal] = useModal();
-  const [token] = useToken();
+  const { loggedIn } = useLogin();
 
   return (
     <Container>
       <Links>
-        {token && (
+        {loggedIn && (
           <Link $padding onClick={() => showModal("help")}>
             Why don't all PR's show up?
           </Link>
