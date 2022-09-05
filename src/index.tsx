@@ -8,7 +8,6 @@ import "./index.css";
 import { PullRequestProvider } from "./pull-request/PullRequestProvider";
 import reportWebVitals from "./reportWebVitals";
 import { colors } from "./ui/colors";
-import Favicon from "react-favicon";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -19,8 +18,6 @@ root.render(
       <React.Suspense>
         <PullRequestProvider>
           <App />
-          <Favicon url="http://localhost:3000/favicon-yellow-dot.ico" />
-          {/* <Favicon url="http://oflisback.github.io/react-favicon/img/github.ico" /> */}
         </PullRequestProvider>
       </React.Suspense>
     </RecoilRoot>
