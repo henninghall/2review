@@ -1,27 +1,21 @@
 import styled from "styled-components";
-import { useLogin } from "./auth/useLogin";
-import { useToken } from "./auth/useToken";
+import { useLogin, useLoginWhenNecessary } from "./auth/useLogin";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { Modals } from "./modals/CurrentModal";
 import { PullRequests } from "./pull-request/PullRequests";
-import { useFetchPrsOnMount } from "./pull-request/useFetchPrsOnMount";
-import { useFetchPrsOnTabFocus } from "./pull-request/useFetchPrsOnTabFocus";
 import { SignInOverlay } from "./SignInOverlay";
 
 export function App() {
-  const [token] = useToken();
-
-  useLogin();
-  useFetchPrsOnMount();
-  useFetchPrsOnTabFocus();
+  const { loggedIn } = useLogin();
+  useLoginWhenNecessary();
 
   return (
     <Container>
       <Content>
         <Header />
         <PullRequests />
-        {!token && <SignInOverlay />}
+        {!loggedIn && <SignInOverlay />}
         <Footer />
       </Content>
       <Modals />

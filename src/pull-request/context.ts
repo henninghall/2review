@@ -6,5 +6,4 @@ export const PullRequestContext = createContext<{
   error: Error | undefined;
   loading: boolean;
   fetching: boolean;
-  fetch: () => Promise<void>;
 }>({} as never);

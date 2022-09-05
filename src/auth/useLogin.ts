@@ -1,19 +1,25 @@
 import { useCallback, useEffect } from "react";
+import { atom, useRecoilState } from "recoil";
+import { github } from "../api/githubApi";
 import { LoginBody } from "../api/types";
 import { fetchJson } from "../fetchJsonx";
 import { appType } from "./appType";
 import { state } from "./state";
 import { AuthResponse } from "./types";
 import { useIsAuthorizing } from "./useIsAutherizing";
-import { useRefreshToken } from "./useRefreshToken";
-import { useToken } from "./useToken";
-import { useUsername } from "./useUsername";
+
+type Callback = () => void;
+let onLoginCallbacks: Callback[] = [];
+let onLogoutCallbacks: Callback[] = [];
+
+const loggedInState = atom({
+  key: "loggedIn",
+  default: !!github.token.get(),
+});
 
 export const useLogin = () => {
-  const [, setToken] = useToken();
-  const [, setRefreshToken] = useRefreshToken();
+  const [loggedIn, setLoggedIn] = useRecoilState(loggedInState);
   const [, setIsAuthorizing] = useIsAuthorizing();
-  const { updateUsername } = useUsername();
 
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");
@@ -51,16 +57,43 @@ export const useLogin = () => {
       const { access_token, refresh_token } = response;
 
       if (access_token) {
-        setToken(access_token);
-        setRefreshToken(refresh_token);
-        await updateUsername({ token: access_token });
+        setLoggedIn(true);
+        github.token.set(access_token);
+        github.refreshToken.set(refresh_token);
+        onLoginCallbacks.forEach((c) => c());
       }
     } finally {
       window.history.pushState({}, document.title, window.location.pathname);
       setIsAuthorizing(false);
     }
-  }, [code, setIsAuthorizing, setRefreshToken, setToken, updateUsername]);
+  }, [code, setIsAuthorizing, setLoggedIn]);
 
+  const onLogin = (callback: Callback) => {
+    onLoginCallbacks.push(callback);
+    return () => {
+      onLoginCallbacks = onLoginCallbacks.filter((c) => c !== callback);
+    };
+  };
+
+  const onLogout = (callback: Callback) => {
+    onLogoutCallbacks.push(callback);
+    return () => {
+      onLogoutCallbacks = onLogoutCallbacks.filter((c) => c !== callback);
+    };
+  };
+
+  const logout = () => {
+    setLoggedIn(false);
+    github.token.set(null);
+    github.refreshToken.set(null);
+    onLogoutCallbacks.forEach((c) => c());
+  };
+
+  return { login, shouldLogin, loggedIn, onLogin, logout, onLogout };
+};
+
+export const useLoginWhenNecessary = () => {
+  const { shouldLogin, login } = useLogin();
   useEffect(() => {
     if (shouldLogin()) login();
   }, [login, shouldLogin]);

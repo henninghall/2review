@@ -1,11 +1,13 @@
+import { useState } from "react";
+import { github } from "../api/githubApi";
 import { SignOutButton } from "../auth/SignOutButton";
-import { useRefreshToken } from "../auth/useRefreshToken";
-import { useToken } from "../auth/useToken";
+import { useUsername } from "../auth/useUsername";
+import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 
 export const SettingsModal = () => {
-  const [token, setToken] = useToken();
-  const [, setRefreshToken] = useRefreshToken();
+  const username = useUsername();
+  const [token, setToken] = useState(github.token.get());
 
   return (
     <>
@@ -14,9 +16,28 @@ export const SettingsModal = () => {
         placeholder="Token"
         value={token ?? ""}
         onChange={(token) => {
-          setRefreshToken(undefined);
+          github.token.set(token);
           setToken(token);
         }}
+      />
+      <Button
+        onClick={() => {
+          github.token.set("x");
+          setToken("x");
+        }}
+        text="Invalidate auth token"
+      />
+      <Button
+        onClick={() => {
+          github.refreshToken.set("x");
+        }}
+        text="Invalidate refresh token"
+      />
+      <Button
+        onClick={() => {
+          username.clear();
+        }}
+        text="Remove username"
       />
       <div style={{ visibility: token ? "visible" : "hidden" }}>
         <SignOutButton />

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors, highlights } from "./ui/colors";
+import { colors, highlights } from "./colors";
 
 export const Card = styled.a<{
   $loading: boolean;

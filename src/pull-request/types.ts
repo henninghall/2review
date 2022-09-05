@@ -1,3 +1,5 @@
-import { fetchPullRequests } from "./fetchPullRequests";
+import { useFetchPullRequests } from "./fetchPullRequests";
 
-export type PullRequest = Awaited<ReturnType<typeof fetchPullRequests>>[0];
+export type PullRequest = Awaited<
+  ReturnType<ReturnType<typeof useFetchPullRequests>>
+>[0];

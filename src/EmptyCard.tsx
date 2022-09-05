@@ -1,4 +1,4 @@
-import { Card } from "./Card";
+import { Card } from "./ui/Card";
 import { usePersonalOnly } from "./usePersonalOnly";
 
 export const EmptyCard = () => {
