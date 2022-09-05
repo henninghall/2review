@@ -1,5 +1,9 @@
 import styled from "styled-components";
-import { useLogin, useLoginWhenNecessary } from "./auth/useLogin";
+import {
+  useLogin,
+  useLoginWhenNecessary,
+  useLogoutWhenNecessary,
+} from "./auth/useLogin";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { Modals } from "./modals/CurrentModal";
@@ -9,6 +13,7 @@ import { SignInOverlay } from "./SignInOverlay";
 export function App() {
   const { loggedIn } = useLogin();
   useLoginWhenNecessary();
+  useLogoutWhenNecessary();
 
   return (
     <Container>

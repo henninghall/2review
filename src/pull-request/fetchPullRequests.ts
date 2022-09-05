@@ -51,7 +51,6 @@ export const useFetchPullRequests = () => {
 
       return { person, teams, title, html_url, updated_at };
     });
-    console.log({ prPromises, prsWithReviewers });
     return prsWithReviewers;
   }, []);
 };

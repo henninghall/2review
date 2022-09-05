@@ -3,7 +3,7 @@ import { fetchJson } from "../fetchJsonx";
 import { appType } from "./appType";
 import { AuthResponse } from "./types";
 
-export const refresh = async ({
+export const fetchNewToken = async ({
   refreshToken,
 }: {
   refreshToken: string | undefined;

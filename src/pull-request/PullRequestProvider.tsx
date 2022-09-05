@@ -23,7 +23,6 @@ export const PullRequestProvider = ({ children }: Props) => {
       setData([]);
       return;
     }
-
     setFetching(true);
     setError(undefined);
     try {

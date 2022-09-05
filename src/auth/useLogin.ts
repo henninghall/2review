@@ -4,13 +4,14 @@ import { github } from "../api/githubApi";
 import { LoginBody } from "../api/types";
 import { fetchJson } from "../fetchJsonx";
 import { appType } from "./appType";
+import { addRefreshFailListener } from "./authStrategy";
 import { state } from "./state";
 import { AuthResponse } from "./types";
 import { useIsAuthorizing } from "./useIsAutherizing";
 
-type Callback = () => void;
-let onLoginCallbacks: Callback[] = [];
-let onLogoutCallbacks: Callback[] = [];
+type Listener = () => void;
+let onLoginListeners: Listener[] = [];
+let onLogoutListeners: Listener[] = [];
 
 const loggedInState = atom({
   key: "loggedIn",
@@ -60,7 +61,7 @@ export const useLogin = () => {
         setLoggedIn(true);
         github.token.set(access_token);
         github.refreshToken.set(refresh_token);
-        onLoginCallbacks.forEach((c) => c());
+        onLoginListeners.forEach((c) => c());
       }
     } finally {
       window.history.pushState({}, document.title, window.location.pathname);
@@ -68,17 +69,17 @@ export const useLogin = () => {
     }
   }, [code, setIsAuthorizing, setLoggedIn]);
 
-  const onLogin = (callback: Callback) => {
-    onLoginCallbacks.push(callback);
+  const onLogin = (callback: Listener) => {
+    onLoginListeners.push(callback);
     return () => {
-      onLoginCallbacks = onLoginCallbacks.filter((c) => c !== callback);
+      onLoginListeners = onLoginListeners.filter((c) => c !== callback);
     };
   };
 
-  const onLogout = (callback: Callback) => {
-    onLogoutCallbacks.push(callback);
+  const onLogout = (callback: Listener) => {
+    onLogoutListeners.push(callback);
     return () => {
-      onLogoutCallbacks = onLogoutCallbacks.filter((c) => c !== callback);
+      onLogoutListeners = onLogoutListeners.filter((c) => c !== callback);
     };
   };
 
@@ -86,7 +87,7 @@ export const useLogin = () => {
     setLoggedIn(false);
     github.token.set(null);
     github.refreshToken.set(null);
-    onLogoutCallbacks.forEach((c) => c());
+    onLogoutListeners.forEach((c) => c());
   };
 
   return { login, shouldLogin, loggedIn, onLogin, logout, onLogout };
@@ -97,4 +98,11 @@ export const useLoginWhenNecessary = () => {
   useEffect(() => {
     if (shouldLogin()) login();
   }, [login, shouldLogin]);
+};
+
+export const useLogoutWhenNecessary = () => {
+  const { logout } = useLogin();
+  useEffect(() => {
+    return addRefreshFailListener(logout);
+  }, [logout]);
 };
