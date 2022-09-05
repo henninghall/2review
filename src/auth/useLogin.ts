@@ -9,10 +9,6 @@ import { state } from "./state";
 import { AuthResponse } from "./types";
 import { useIsAuthorizing } from "./useIsAutherizing";
 
-type Listener = () => void;
-let onLoginListeners: Listener[] = [];
-let onLogoutListeners: Listener[] = [];
-
 const loggedInState = atom({
   key: "loggedIn",
   default: !!github.token.get(),
@@ -61,7 +57,6 @@ export const useLogin = () => {
         setLoggedIn(true);
         github.token.set(access_token);
         github.refreshToken.set(refresh_token);
-        onLoginListeners.forEach((c) => c());
       }
     } finally {
       window.history.pushState({}, document.title, window.location.pathname);
@@ -69,28 +64,13 @@ export const useLogin = () => {
     }
   }, [code, setIsAuthorizing, setLoggedIn]);
 
-  const onLogin = (callback: Listener) => {
-    onLoginListeners.push(callback);
-    return () => {
-      onLoginListeners = onLoginListeners.filter((c) => c !== callback);
-    };
-  };
-
-  const onLogout = (callback: Listener) => {
-    onLogoutListeners.push(callback);
-    return () => {
-      onLogoutListeners = onLogoutListeners.filter((c) => c !== callback);
-    };
-  };
-
   const logout = () => {
     setLoggedIn(false);
     github.token.set(null);
     github.refreshToken.set(null);
-    onLogoutListeners.forEach((c) => c());
   };
 
-  return { login, shouldLogin, loggedIn, onLogin, logout, onLogout };
+  return { login, shouldLogin, loggedIn, logout, setLoggedIn };
 };
 
 export const useLoginWhenNecessary = () => {
