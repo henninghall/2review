@@ -1,8 +1,9 @@
 import { useLogin } from "../auth/useLogin";
+import { useBotPrs } from "../bot-prs/useBotPrs";
 import { EmptyCard } from "../EmptyCard";
 import { ErrorCard } from "../ErrorCard";
+import { usePersonalOnly } from "../personal-prs/usePersonalOnly";
 import { SkeletonCards } from "../SkeletonCards";
-import { usePersonalOnly } from "../usePersonalOnly";
 import { PullRequest } from "./PullRequest";
 import { usePullRequests } from "./usePullRequests";
 
@@ -11,11 +12,10 @@ export const PullRequests = () => {
   const preview = !loggedIn;
 
   const { loading, data, error } = usePullRequests();
-  const [onlyPersonal] = usePersonalOnly();
+  const { personalFilter } = usePersonalOnly();
+  const { botFilter } = useBotPrs();
 
-  const pullRequests = data.filter((pr) =>
-    onlyPersonal ? pr.person.length : true
-  );
+  const pullRequests = data.filter(personalFilter).filter(botFilter);
 
   if (error) return <ErrorCard error={error} />;
   if (preview) return <SkeletonCards loading={false} preview={true} />;

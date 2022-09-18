@@ -1,10 +1,10 @@
-import { useLogin } from "./auth/useLogin";
-import { Toggle } from "./ui/Toggle";
+import { useLogin } from "../auth/useLogin";
+import { Toggle } from "../ui/Toggle";
 import { usePersonalOnly } from "./usePersonalOnly";
 
 export const PersonalToggle = () => {
   const { loggedIn } = useLogin();
-  const [onlyPersonal, setOnlyPersonal] = usePersonalOnly();
+  const { onlyPersonal, setOnlyPersonal } = usePersonalOnly();
 
   if (!loggedIn) return null;
   return (

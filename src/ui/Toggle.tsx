@@ -13,12 +13,12 @@ export function Toggle({
     <div className="toggles">
       <input
         type="checkbox"
-        name="styled"
-        id="styled"
+        name={label}
+        id={label}
         checked={checked}
         onChange={() => onChange(!checked)}
       />
-      <label htmlFor="styled" style={{ fontSize: "0.9em" }}>
+      <label htmlFor={label} style={{ fontSize: "0.9em" }}>
         {label}
       </label>
     </div>

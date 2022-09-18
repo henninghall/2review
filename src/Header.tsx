@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { PersonalToggle } from "./PersonalToggle";
+import { BotToggle } from "./bot-prs/BotToggle";
+import { PersonalToggle } from "./personal-prs/PersonalToggle";
 import { usePullRequests } from "./pull-request/usePullRequests";
 import { colors } from "./ui/colors";
 import { getHeight, Loader } from "./ui/Loader";
@@ -17,7 +18,10 @@ export const Header = () => {
         </p>
       </HeaderText>
       <Right>
-        <PersonalToggle />
+        <Toggles>
+          <BotToggle />
+          <PersonalToggle />
+        </Toggles>
         {fetching && !loading && <Loader small color="gray200" />}
       </Right>
     </Container>
@@ -26,6 +30,12 @@ export const Header = () => {
 
 const loaderHeight = getHeight({ small: true });
 
+const Toggles = styled.div({
+  display: "flex",
+  flexDirection: "row",
+  gap: "1rem",
+});
+
 const Right = styled.div`
   display: flex;
   align-items: flex-end;
@@ -33,7 +43,7 @@ const Right = styled.div`
   gap: 15px;
   align-items: center;
   min-height: ${loaderHeight}px;
-  @media (min-width: 700px) {
+  @media (min-width: 847px) {
     flex-direction: column-reverse;
     align-items: flex-end;
   }

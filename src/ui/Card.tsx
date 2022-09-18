@@ -8,7 +8,7 @@ export const Card = styled.a<{
 }>`
   background-color: ${colors.gray500};
   border-radius: 6px;
-  padding: 3vh 4vw;
+  padding: 1.5rem 2rem;
   box-shadow: 0 2px 5px #111;
   display: flex;
   flex-wrap: wrap;

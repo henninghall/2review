@@ -35,13 +35,7 @@ export const useFetchPullRequests = () => {
 
     const prsWithReviewers = rawPrWithReviewers.map((pr) => {
       if (!pr) throw Error("Not a PR");
-      const {
-        requested_reviewers,
-        requested_teams,
-        title,
-        html_url,
-        updated_at,
-      } = pr.data;
+      const { requested_reviewers, requested_teams, ...rest } = pr.data;
       if (!requested_reviewers) throw Error("Unexpected revivers format");
       if (!requested_teams) throw Error("Unexpected requested teams format");
       const teams = requested_teams.map((team) => team.name);
@@ -49,7 +43,7 @@ export const useFetchPullRequests = () => {
         .filter((r) => r.login === username)
         .map((p) => p.login);
 
-      return { person, teams, title, html_url, updated_at };
+      return { person, teams, ...rest };
     });
     return prsWithReviewers;
   }, []);

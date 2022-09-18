@@ -1,8 +1,8 @@
+import { usePersonalOnly } from "./personal-prs/usePersonalOnly";
 import { Card } from "./ui/Card";
-import { usePersonalOnly } from "./usePersonalOnly";
 
 export const EmptyCard = () => {
-  const [onlyPersonal] = usePersonalOnly();
+  const { onlyPersonal } = usePersonalOnly();
 
   return (
     <Card $loading={false} preview={false} withoutHover>
