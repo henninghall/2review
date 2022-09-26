@@ -6,7 +6,9 @@ import {
 } from "./auth/useLogin";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
+import { useInitServerMocking } from "./mocks/useInitServerMocking";
 import { Modals } from "./modals/CurrentModal";
+import { useNewPrsIndicator } from "./new-prs-indicator/useNewPrsIndicator";
 import { PullRequests } from "./pull-request/PullRequests";
 import { SignInOverlay } from "./SignInOverlay";
 
@@ -14,17 +16,21 @@ export function App() {
   const { loggedIn } = useLogin();
   useLoginWhenNecessary();
   useLogoutWhenNecessary();
+  useNewPrsIndicator();
+  useInitServerMocking();
 
   return (
-    <Container>
-      <Content>
-        <Header />
-        <PullRequests />
-        {!loggedIn && <SignInOverlay />}
-        <Footer />
-      </Content>
-      <Modals />
-    </Container>
+    <>
+      <Container>
+        <Content>
+          <Header />
+          <PullRequests />
+          {!loggedIn && <SignInOverlay />}
+          <Footer />
+        </Content>
+        <Modals />
+      </Container>
+    </>
   );
 }
 

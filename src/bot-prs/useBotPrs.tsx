@@ -12,7 +12,7 @@ export const useBotPrs = () => {
   const [showBotPrs, setShowBotPrs] = useRecoilState(state);
   const botFilter = (pr: PullRequest) => {
     if (showBotPrs) return true;
-    return !pr.user?.login.includes("[bot]");
+    return pr.user?.type !== "Bot";
   };
   return { botFilter, showBotPrs, setShowBotPrs };
 };

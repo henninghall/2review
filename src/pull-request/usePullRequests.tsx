@@ -1,14 +1,33 @@
-import { ReactNode, useCallback, useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useLogin } from "../auth/useLogin";
 import { useUsername } from "../auth/useUsername";
+import { useServerMocking } from "../mocks/useServerMocking";
+import { useMount } from "../useMount";
 import { useTabFocus } from "../useTabFocus";
-import { PullRequestContext } from "./context";
 import { useFetchPullRequests } from "./fetchPullRequests";
 import { PullRequest } from "./types";
 
 interface Props {
   children: ReactNode;
 }
+
+const MINUTES_BETWEEN_FETCHES = 5;
+
+const PullRequestContext = createContext<{
+  data: PullRequest[];
+  error: Error | undefined;
+  loading: boolean;
+  fetching: boolean;
+}>({} as never);
+
+export const usePullRequests = () => useContext(PullRequestContext);
 
 export const PullRequestProvider = ({ children }: Props) => {
   const { loggedIn } = useLogin();
@@ -17,8 +36,10 @@ export const PullRequestProvider = ({ children }: Props) => {
   const [data, setData] = useState<PullRequest[]>([]);
   const { getUsername } = useUsername();
   const fetchPullRequests = useFetchPullRequests();
+  const { useAtChange: useAtServerMockChange } = useServerMocking();
 
   const fetch = useCallback(async () => {
+    if (fetching) return;
     if (!loggedIn) {
       setData([]);
       return;
@@ -35,15 +56,12 @@ export const PullRequestProvider = ({ children }: Props) => {
     } finally {
       setFetching(false);
     }
-  }, [fetchPullRequests, getUsername, loggedIn]);
+  }, [fetchPullRequests, fetching, getUsername, loggedIn]);
 
-  useEffect(() => {
-    fetch();
-  }, [fetch, loggedIn]);
-
-  useTabFocus(() => {
-    fetch();
-  });
+  useMount(fetch);
+  useTabFocus(fetch);
+  useAtInterval(fetch, { minutes: MINUTES_BETWEEN_FETCHES });
+  useAtServerMockChange(fetch);
 
   const loading = fetching && data.length === 0;
 
@@ -52,4 +70,12 @@ export const PullRequestProvider = ({ children }: Props) => {
       {children}
     </PullRequestContext.Provider>
   );
+};
+
+const useAtInterval = (fetch: () => void, { minutes }: { minutes: number }) => {
+  useEffect(() => {
+    const ms = 1000 * 60 * minutes;
+    const interval = setInterval(fetch, ms);
+    return () => clearInterval(interval);
+  }, [fetch, minutes]);
 };

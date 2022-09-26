@@ -42,7 +42,6 @@ export const useFetchPullRequests = () => {
       const person = requested_reviewers
         .filter((r) => r.login === username)
         .map((p) => p.login);
-
       return { person, teams, ...rest };
     });
     return prsWithReviewers;

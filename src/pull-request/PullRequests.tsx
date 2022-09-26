@@ -4,8 +4,8 @@ import { EmptyCard } from "../EmptyCard";
 import { ErrorCard } from "../ErrorCard";
 import { usePersonalOnly } from "../personal-prs/usePersonalOnly";
 import { SkeletonCards } from "../SkeletonCards";
-import { PullRequest } from "./PullRequest";
 import { usePullRequests } from "./usePullRequests";
+import { PullRequest } from "./PullRequest";
 
 export const PullRequests = () => {
   const { loggedIn } = useLogin();

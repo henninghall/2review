@@ -1,9 +1,9 @@
 import React from "react";
 import Skeleton from "react-loading-skeleton";
 import styled from "styled-components";
+import pr from "../svg/pr.svg";
 import { Card } from "../ui/Card";
 import { Reviewers } from "./Reviewers";
-import pr from "../svg/pr.svg";
 import { PullRequest as PullRequestType } from "./types";
 
 type Props = {
@@ -11,6 +11,7 @@ type Props = {
   loading: boolean;
   preview: boolean;
   index: number;
+  new?: boolean;
 };
 
 const lenghts = [3, 5, 9, 1, 6, 7, 2, 4, 8, 0];
@@ -25,6 +26,7 @@ export const PullRequest = React.memo((props: Props) => {
       target="_blank"
       $loading={loading}
       preview={preview}
+      yellowIndicator={props.new}
     >
       <Icon />
       <PrTitle>

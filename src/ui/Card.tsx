@@ -5,6 +5,7 @@ export const Card = styled.a<{
   $loading: boolean;
   preview: boolean;
   withoutHover?: boolean;
+  yellowIndicator?: boolean;
 }>`
   background-color: ${colors.gray500};
   border-radius: 6px;
@@ -17,5 +18,18 @@ export const Card = styled.a<{
   :hover {
     ${({ $loading, preview, withoutHover }) =>
       $loading || preview || withoutHover ? undefined : highlights}
+  }
+  border: 10px solid
+    ${({ yellowIndicator }) =>
+      yellowIndicator ? colors.yellow : colors.gray500};
+  border-width: 0 0.4rem 0 0;
+  &:visited {
+    border-color: ${colors.gray500};
+  }
+  &:link {
+    border-color: ${colors.yellow};
+  }
+  .dot {
+    font-size: 8px;
   }
 `;

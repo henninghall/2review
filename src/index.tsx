@@ -5,13 +5,14 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { RecoilRoot } from "recoil";
 import { App } from "./App";
 import "./index.css";
-import { PullRequestProvider } from "./pull-request/PullRequestProvider";
+import { PullRequestProvider } from "./pull-request/usePullRequests";
 import reportWebVitals from "./reportWebVitals";
 import { colors } from "./ui/colors";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <SkeletonTheme baseColor={colors.gray300} highlightColor={colors.gray400}>
     <RecoilRoot>

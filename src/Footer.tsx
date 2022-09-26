@@ -16,7 +16,7 @@ export const Footer = () => {
       <Links>
         {loggedIn && (
           <Link $padding onClick={() => showModal("help")}>
-            Why don't all PR's show up?
+            Why don't all PRs show up?
           </Link>
         )}
         <Link $padding onClick={() => showModal("install")}>
