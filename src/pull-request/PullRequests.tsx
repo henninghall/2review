@@ -2,20 +2,20 @@ import { useLogin } from "../auth/useLogin";
 import { useBotPrs } from "../bot-prs/useBotPrs";
 import { EmptyCard } from "../EmptyCard";
 import { ErrorCard } from "../ErrorCard";
-import { usePersonalOnly } from "../personal-prs/usePersonalOnly";
 import { SkeletonCards } from "../SkeletonCards";
-import { usePullRequests } from "./usePullRequests";
+import { useTeamPrs } from "../team-prs/useTeamPrs";
 import { PullRequest } from "./PullRequest";
+import { usePullRequests } from "./usePullRequests";
 
 export const PullRequests = () => {
   const { loggedIn } = useLogin();
   const preview = !loggedIn;
 
   const { loading, data, error } = usePullRequests();
-  const { personalFilter } = usePersonalOnly();
+  const { teamFilter } = useTeamPrs();
   const { botFilter } = useBotPrs();
 
-  const pullRequests = data.filter(personalFilter).filter(botFilter);
+  const pullRequests = data.filter(teamFilter).filter(botFilter);
 
   if (error) return <ErrorCard error={error} />;
   if (preview) return <SkeletonCards loading={false} preview={true} />;

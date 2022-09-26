@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { BotToggle } from "./bot-prs/BotToggle";
-import { PersonalToggle } from "./personal-prs/PersonalToggle";
+import { PersonalToggle } from "./team-prs/TeamPrsToggle";
 import { usePullRequests } from "./pull-request/usePullRequests";
 import { colors } from "./ui/colors";
 import { getHeight, Loader } from "./ui/Loader";
