@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { BotToggle } from "./bot-prs/BotToggle";
-import { PersonalToggle } from "./team-prs/TeamPrsToggle";
+import { TeamPrsToggle } from "./team-prs/TeamPrsToggle";
 import { usePullRequests } from "./pull-request/usePullRequests";
 import { colors } from "./ui/colors";
 import { getHeight, Loader } from "./ui/Loader";
@@ -20,7 +20,7 @@ export const Header = () => {
       <Right>
         <Toggles>
           <BotToggle />
-          <PersonalToggle />
+          <TeamPrsToggle />
         </Toggles>
         {fetching && !loading && <Loader small color="gray200" />}
       </Right>

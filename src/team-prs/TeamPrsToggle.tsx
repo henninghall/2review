@@ -2,7 +2,7 @@ import { useLogin } from "../auth/useLogin";
 import { Toggle } from "../ui/Toggle";
 import { useTeamPrs } from "./useTeamPrs";
 
-export const PersonalToggle = () => {
+export const TeamPrsToggle = () => {
   const { loggedIn } = useLogin();
   const { showTeamPrs, setShowTeamPrs } = useTeamPrs();
 
