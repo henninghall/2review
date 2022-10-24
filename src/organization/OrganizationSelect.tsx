@@ -13,6 +13,7 @@ export const OrganizationSelect = () => {
     useOrganizationFilter();
   const { data: prs } = usePullRequests();
   const allOrgs = prs
+    .filter((pr) => pr.hasOrganizationOwner)
     .map((pr) => pr.owner)
     .filter(onlyUnique)
     .filter(exists);
@@ -28,6 +29,8 @@ export const OrganizationSelect = () => {
       label: "-- Select all --",
     });
   }
+
+  if (allOrgs.length <= 1 && allSelected) return null;
 
   return (
     <Select
