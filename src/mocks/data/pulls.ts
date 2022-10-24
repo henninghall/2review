@@ -23,4 +23,18 @@ export const pulls = {
     pull.requested_reviewers = [reviewer];
     return pull;
   },
+  organizationA: (id: number) => {
+    const pull = getPull(id);
+    pull.title = "Organization A";
+    pull.head.repo.owner.type = "Organization";
+    pull.head.repo.owner.login = "Organization A";
+    return pull;
+  },
+  organizationB: (id: number) => {
+    const pull = getPull(id);
+    pull.title = "Organization B";
+    pull.head.repo.owner.type = "Organization";
+    pull.head.repo.owner.login = "Organization B";
+    return pull;
+  },
 };

@@ -1,4 +1,6 @@
-type _2reviewType = "bot" | "default" | "personal";
+import { pulls } from "./pulls";
+
+type _2reviewType = keyof typeof pulls;
 
 export const issue = (type: _2reviewType) => {
   let id = Math.floor(Math.random() * 100000);

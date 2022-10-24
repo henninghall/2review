@@ -12,7 +12,7 @@ import { useServerMocking } from "../mocks/useServerMocking";
 import { useMount } from "../useMount";
 import { useTabFocus } from "../useTabFocus";
 import { useFetchPullRequests } from "./fetchPullRequests";
-import { PullRequest } from "./types";
+import { PullRequest, RawPullRequest } from "./types";
 
 interface Props {
   children: ReactNode;
@@ -49,7 +49,8 @@ export const PullRequestProvider = ({ children }: Props) => {
     try {
       const username = await getUsername();
       const data = await fetchPullRequests({ username });
-      setData(data);
+      const dataWithExtras = data.map(addExtras);
+      setData(dataWithExtras);
     } catch (error: any) {
       if (error.status === 401) return; // ignore 401 (user will be logged out)
       setError(error);
@@ -78,4 +79,12 @@ const useAtInterval = (fetch: () => void, { minutes }: { minutes: number }) => {
     const interval = setInterval(fetch, ms);
     return () => clearInterval(interval);
   }, [fetch, minutes]);
+};
+
+const addExtras = (pr: RawPullRequest): PullRequest => {
+  return {
+    ...pr,
+    hasOrganizationOwner: pr.head.repo?.owner.type === "Organization",
+    owner: pr.head.repo?.owner.login,
+  };
 };

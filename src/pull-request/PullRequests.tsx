@@ -2,10 +2,11 @@ import { useLogin } from "../auth/useLogin";
 import { useBotPrs } from "../bot-prs/useBotPrs";
 import { EmptyCard } from "../EmptyCard";
 import { ErrorCard } from "../ErrorCard";
+import { useOrganizationFilter } from "../organization/useOrganizationFilter";
 import { usePersonalOnly } from "../personal-prs/usePersonalOnly";
 import { SkeletonCards } from "../SkeletonCards";
-import { usePullRequests } from "./usePullRequests";
 import { PullRequest } from "./PullRequest";
+import { usePullRequests } from "./usePullRequests";
 
 export const PullRequests = () => {
   const { loggedIn } = useLogin();
@@ -14,8 +15,12 @@ export const PullRequests = () => {
   const { loading, data, error } = usePullRequests();
   const { personalFilter } = usePersonalOnly();
   const { botFilter } = useBotPrs();
+  const { organizationFilter } = useOrganizationFilter();
 
-  const pullRequests = data.filter(personalFilter).filter(botFilter);
+  const pullRequests = data
+    .filter(personalFilter)
+    .filter(botFilter)
+    .filter(organizationFilter);
 
   if (error) return <ErrorCard error={error} />;
   if (preview) return <SkeletonCards loading={false} preview={true} />;

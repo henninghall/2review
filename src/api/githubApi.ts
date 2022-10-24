@@ -31,4 +31,5 @@ export const GithubApi = {
   getUser: async () => (await api.rest.users.getAuthenticated()).data,
   getIssuesAndPullRequests: api.rest.search.issuesAndPullRequests,
   getPullRequest: api.rest.pulls.get,
+  getOrganizations: api.rest.orgs.get,
 };

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { BotToggle } from "./bot-prs/BotToggle";
+import { OrganizationSelect } from "./organization/OrganizationSelect";
 import { PersonalToggle } from "./personal-prs/PersonalToggle";
 import { usePullRequests } from "./pull-request/usePullRequests";
 import { colors } from "./ui/colors";
@@ -21,8 +22,9 @@ export const Header = () => {
         <Toggles>
           <BotToggle />
           <PersonalToggle />
+          <OrganizationSelect />
+          {fetching && !loading && <Loader small color="gray200" />}
         </Toggles>
-        {fetching && !loading && <Loader small color="gray200" />}
       </Right>
     </Container>
   );

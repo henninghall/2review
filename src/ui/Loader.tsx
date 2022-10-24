@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Color, colors } from "./colors";
 
 const getScale = ({ small }: Props) => (small ? 0.5 : 1);
-const height = ({ scale }: { scale: number }) => 80 * scale;
+const height = ({ scale }: { scale: number }) => 70 * scale;
 export const getHeight = ({ small }: Props) =>
   height({ scale: getScale({ small }) });
 
