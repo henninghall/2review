@@ -23,5 +23,7 @@ export const useFilters = () => {
 
   const reset = () => filters.forEach((filter) => filter.reset());
 
-  return { combinedFilter, reset };
+  const hasChangedFilters = filters.some((f) => !f.isDefault);
+
+  return { combinedFilter, reset, canReset: hasChangedFilters };
 };

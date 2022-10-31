@@ -22,6 +22,7 @@ export const useOrganizationFilter = () => {
       if (!pr.owner) return true;
       return !excludedOrganizations.includes(pr.owner);
     },
+    isDefault: excludedOrganizations.length === 0,
   };
 
   return {

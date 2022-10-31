@@ -15,7 +15,7 @@ export const Filters = () => {
   const [showFilters, setShowFilters] = useState(false);
   const { loggedIn } = useLogin();
   const { visiblePullRequests, data } = usePullRequests();
-  const { reset } = useFilters();
+  const { reset, canReset } = useFilters();
 
   if (!loggedIn) return null;
   if (!data.length) return null;
@@ -45,7 +45,7 @@ export const Filters = () => {
             <RepoSelect />
           </LeftContent>
           <RightContent>
-            <Link onClick={reset}>Reset</Link>
+            {canReset && <Link onClick={reset}>Reset</Link>}
           </RightContent>
         </Content>
       )}

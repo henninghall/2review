@@ -17,6 +17,7 @@ export const useRepoFilter = () => {
   const repoFilter: Filter = {
     apply: (pr) => !excludedRepos.includes(pr.base.repo.name),
     reset,
+    isDefault: excludedRepos.length === 0,
   };
 
   return {

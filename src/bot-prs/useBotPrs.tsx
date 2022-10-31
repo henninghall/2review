@@ -2,9 +2,11 @@ import { atom, useRecoilState, useResetRecoilState } from "recoil";
 import { Filter } from "../filtering/types";
 import { persistAtom } from "../persistAtom";
 
+const initialValue = true;
+
 const state = atom({
   key: "botPrs",
-  default: true,
+  default: initialValue,
   effects: [persistAtom],
 });
 
@@ -17,6 +19,7 @@ export const useBotPrs = () => {
       return pr.user?.type !== "Bot";
     },
     reset,
+    isDefault: initialValue === showBotPrs,
   };
   return { botFilter, showBotPrs, setShowBotPrs };
 };

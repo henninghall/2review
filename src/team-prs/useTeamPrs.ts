@@ -3,9 +3,11 @@ import { useUsername } from "../auth/useUsername";
 import { Filter } from "../filtering/types";
 import { persistAtom } from "../persistAtom";
 
+const initialValue = true;
+
 const state = atom({
   key: "teamPrs",
-  default: true,
+  default: initialValue,
   effects: [persistAtom],
 });
 
@@ -21,6 +23,7 @@ export const useTeamPrs = () => {
       return pr.person.includes(username);
     },
     reset,
+    isDefault: initialValue === showTeamPrs,
   };
 
   return { showTeamPrs, setShowTeamPrs, teamFilter };
