@@ -1,7 +1,7 @@
-import { atom, useRecoilState } from "recoil";
+import { atom, useRecoilState, useResetRecoilState } from "recoil";
 import { useUsername } from "../auth/useUsername";
+import { Filter } from "../filtering/types";
 import { persistAtom } from "../persistAtom";
-import { PullRequest } from "../pull-request/types";
 
 const state = atom({
   key: "teamPrs",
@@ -12,11 +12,15 @@ const state = atom({
 export const useTeamPrs = () => {
   const { username } = useUsername();
   const [showTeamPrs, setShowTeamPrs] = useRecoilState(state);
+  const reset = useResetRecoilState(state);
 
-  const teamFilter = (pr: PullRequest) => {
-    if (showTeamPrs) return true;
-    if (!username) return false;
-    return pr.person.includes(username);
+  const teamFilter: Filter = {
+    apply: (pr) => {
+      if (showTeamPrs) return true;
+      if (!username) return false;
+      return pr.person.includes(username);
+    },
+    reset,
   };
 
   return { showTeamPrs, setShowTeamPrs, teamFilter };

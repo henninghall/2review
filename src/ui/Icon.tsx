@@ -4,9 +4,19 @@ import chevronUp from "../svg/chevron-up.svg";
 import filter from "../svg/filter.svg";
 import github from "../svg/github.svg";
 import settings from "../svg/settings.svg";
+import reset from "../svg/reset.svg";
 
-const icons = { github, chevronUp, chevronDown, filter, settings };
+const icons = {
+  github,
+  chevronUp,
+  chevronDown,
+  filter,
+  settings,
+  reset,
+};
+
 const sizes = {
+  s: 15,
   m: 25,
   l: 40,
 };

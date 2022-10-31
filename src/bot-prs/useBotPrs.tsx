@@ -1,6 +1,6 @@
-import { atom, useRecoilState } from "recoil";
+import { atom, useRecoilState, useResetRecoilState } from "recoil";
+import { Filter } from "../filtering/types";
 import { persistAtom } from "../persistAtom";
-import { PullRequest } from "../pull-request/types";
 
 const state = atom({
   key: "botPrs",
@@ -10,9 +10,13 @@ const state = atom({
 
 export const useBotPrs = () => {
   const [showBotPrs, setShowBotPrs] = useRecoilState(state);
-  const botFilter = (pr: PullRequest) => {
-    if (showBotPrs) return true;
-    return pr.user?.type !== "Bot";
+  const reset = useResetRecoilState(state);
+  const botFilter: Filter = {
+    apply: (pr) => {
+      if (showBotPrs) return true;
+      return pr.user?.type !== "Bot";
+    },
+    reset,
   };
   return { botFilter, showBotPrs, setShowBotPrs };
 };

@@ -1,6 +1,6 @@
-import { atom, useRecoilState } from "recoil";
+import { atom, useRecoilState, useResetRecoilState } from "recoil";
+import { Filter } from "../filtering/types";
 import { persistAtom } from "../persistAtom";
-import { PullRequest } from "../pull-request/types";
 
 // Reason for using excluded and not included repos is that persistance of repos without prs should not affect the filtering
 
@@ -12,9 +12,11 @@ const state = atom<string[]>({
 
 export const useRepoFilter = () => {
   const [excludedRepos, setExcludedRepos] = useRecoilState(state);
+  const reset = useResetRecoilState(state);
 
-  const repoFilter = (pr: PullRequest) => {
-    return !excludedRepos.includes(pr.base.repo.name);
+  const repoFilter: Filter = {
+    apply: (pr) => !excludedRepos.includes(pr.base.repo.name),
+    reset,
   };
 
   return {

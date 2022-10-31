@@ -1,6 +1,6 @@
-import { atom, useRecoilState } from "recoil";
+import { atom, useRecoilState, useResetRecoilState } from "recoil";
+import { Filter } from "../filtering/types";
 import { persistAtom } from "../persistAtom";
-import { PullRequest } from "../pull-request/types";
 
 // Reason for using excluded and not included organizations is that persistance of organizations without prs should not affect the filtering
 
@@ -13,11 +13,15 @@ const state = atom<string[]>({
 export const useOrganizationFilter = () => {
   const [excludedOrganizations, setExcludedOrganizations] =
     useRecoilState(state);
+  const reset = useResetRecoilState(state);
 
-  const organizationFilter = (pr: PullRequest) => {
-    if (!pr.hasOrganizationOwner) return true;
-    if (!pr.owner) return true;
-    return !excludedOrganizations.includes(pr.owner);
+  const organizationFilter: Filter = {
+    reset,
+    apply: (pr) => {
+      if (!pr.hasOrganizationOwner) return true;
+      if (!pr.owner) return true;
+      return !excludedOrganizations.includes(pr.owner);
+    },
   };
 
   return {

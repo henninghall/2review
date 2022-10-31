@@ -5,15 +5,22 @@ import { Loader } from "./Loader";
 
 export interface ButtonProps {
   text: string;
+  small?: boolean;
   onClick: () => void;
   loading?: boolean;
   children?: ReactNode;
 }
 
-export const Button = ({ loading, children, text, onClick }: ButtonProps) => {
+export const Button = ({
+  loading,
+  children,
+  text,
+  onClick,
+  small,
+}: ButtonProps) => {
   return (
     <Container onClick={onClick}>
-      <Content>
+      <Content small={small}>
         {children}
         <p>{text}</p>
       </Content>
@@ -22,7 +29,7 @@ export const Button = ({ loading, children, text, onClick }: ButtonProps) => {
   );
 };
 
-const Container = styled.button<{ $loading?: boolean }>`
+const Container = styled.button<{ $loading?: boolean; small?: boolean }>`
   font-size: 1em;
   border-radius: 7px;
   cursor: pointer;
@@ -37,11 +44,11 @@ const Container = styled.button<{ $loading?: boolean }>`
   }
 `;
 
-const Content = styled.div<{ $loading?: boolean }>`
+const Content = styled.div<{ $loading?: boolean; small?: boolean }>`
   font-size: 1em;
   align-items: center;
   cursor: pointer;
   gap: 1rem;
-  padding: 0.8rem 0;
+  padding: ${({ small }) => (small ? 0.4 : 0.8)}rem 0;
   display: flex;
 `;

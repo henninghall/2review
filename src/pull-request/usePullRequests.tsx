@@ -8,11 +8,8 @@ import {
 } from "react";
 import { useLogin } from "../auth/useLogin";
 import { useUsername } from "../auth/useUsername";
-import { useBotPrs } from "../bot-prs/useBotPrs";
+import { useFilters } from "../filtering/useFilters";
 import { useServerMocking } from "../mocks/useServerMocking";
-import { useOrganizationFilter } from "../organization/useOrganizationFilter";
-import { useTeamPrs } from "../team-prs/useTeamPrs";
-import { useRepoFilter } from "../repo/useRepoFilter";
 import { useMount } from "../useMount";
 import { useTabFocus } from "../useTabFocus";
 import { useFetchPullRequests } from "./fetchPullRequests";
@@ -42,6 +39,7 @@ export const PullRequestProvider = ({ children }: Props) => {
   const { getUsername } = useUsername();
   const fetchPullRequests = useFetchPullRequests();
   const { useAtChange: useAtServerMockChange } = useServerMocking();
+  const { combinedFilter } = useFilters();
 
   const fetch = useCallback(async () => {
     if (fetching) return;
@@ -71,16 +69,7 @@ export const PullRequestProvider = ({ children }: Props) => {
 
   const loading = fetching && data.length === 0;
 
-  const { teamFilter } = useTeamPrs();
-  const { botFilter } = useBotPrs();
-  const { organizationFilter } = useOrganizationFilter();
-  const { repoFilter } = useRepoFilter();
-
-  const visiblePullRequests = data
-    .filter(teamFilter)
-    .filter(botFilter)
-    .filter(organizationFilter)
-    .filter(repoFilter);
+  const visiblePullRequests = data.filter(combinedFilter);
 
   return (
     <PullRequestContext.Provider
