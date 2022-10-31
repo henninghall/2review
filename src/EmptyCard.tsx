@@ -1,8 +1,8 @@
-import { usePersonalOnly } from "./personal-prs/usePersonalOnly";
+import { useTeamPrs } from "./team-prs/useTeamPrs";
 import { Card } from "./ui/Card";
 
 export const EmptyCard = () => {
-  const { onlyPersonal } = usePersonalOnly();
+  const { showTeamPrs } = useTeamPrs();
 
   return (
     <Card $loading={false} preview={false} withoutHover>
@@ -25,7 +25,7 @@ export const EmptyCard = () => {
         >
           <h3>Astonishing!</h3>
           <span>{`No pull requests for you${
-            !onlyPersonal ? " or your team" : ""
+            showTeamPrs ? " or your team" : ""
           }.`}</span>
         </div>
       </div>

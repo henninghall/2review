@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useLogin } from "./auth/useLogin";
 import { BotToggle } from "./bot-prs/BotToggle";
 import { OrganizationSelect } from "./organization/OrganizationSelect";
-import { PersonalToggle } from "./personal-prs/PersonalToggle";
+import { TeamToggle } from "./team-prs/TeamPrToggle";
 import { usePullRequests } from "./pull-request/usePullRequests";
 import { RepoSelect } from "./repo/RepoSelect";
 import { colors, highlightsSoft } from "./ui/colors";
@@ -37,7 +37,7 @@ export const Filters = () => {
       {showFilters && (
         <Content>
           <BotToggle />
-          <PersonalToggle />
+          <TeamToggle />
           <OrganizationSelect />
           <RepoSelect />
         </Content>

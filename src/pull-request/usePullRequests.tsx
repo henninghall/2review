@@ -11,7 +11,7 @@ import { useUsername } from "../auth/useUsername";
 import { useBotPrs } from "../bot-prs/useBotPrs";
 import { useServerMocking } from "../mocks/useServerMocking";
 import { useOrganizationFilter } from "../organization/useOrganizationFilter";
-import { usePersonalOnly } from "../personal-prs/usePersonalOnly";
+import { useTeamPrs } from "../team-prs/useTeamPrs";
 import { useRepoFilter } from "../repo/useRepoFilter";
 import { useMount } from "../useMount";
 import { useTabFocus } from "../useTabFocus";
@@ -71,13 +71,13 @@ export const PullRequestProvider = ({ children }: Props) => {
 
   const loading = fetching && data.length === 0;
 
-  const { personalFilter } = usePersonalOnly();
+  const { teamFilter } = useTeamPrs();
   const { botFilter } = useBotPrs();
   const { organizationFilter } = useOrganizationFilter();
   const { repoFilter } = useRepoFilter();
 
   const visiblePullRequests = data
-    .filter(personalFilter)
+    .filter(teamFilter)
     .filter(botFilter)
     .filter(organizationFilter)
     .filter(repoFilter);
