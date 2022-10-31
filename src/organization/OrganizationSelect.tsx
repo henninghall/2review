@@ -1,5 +1,6 @@
 import Select, { defaultTheme } from "react-select";
 import makeAnimated from "react-select/animated";
+import { useLogin } from "../auth/useLogin";
 import { usePullRequests } from "../pull-request/usePullRequests";
 import { colors } from "../ui/colors";
 import { exists, onlyUnique } from "../utils";
@@ -11,6 +12,7 @@ const animatedComponents = makeAnimated();
 export const OrganizationSelect = () => {
   const { excludedOrganizations, setExcludedOrganizations } =
     useOrganizationFilter();
+  const { loggedIn } = useLogin();
   const { data: prs } = usePullRequests();
   const allOrgs = prs
     .filter((pr) => pr.hasOrganizationOwner)
@@ -29,6 +31,8 @@ export const OrganizationSelect = () => {
       label: "-- Select all --",
     });
   }
+
+  if (!loggedIn) return null;
 
   if (allOrgs.length <= 1 && allSelected) return null;
 

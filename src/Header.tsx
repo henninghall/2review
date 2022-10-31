@@ -4,7 +4,7 @@ import { OrganizationSelect } from "./organization/OrganizationSelect";
 import { PersonalToggle } from "./personal-prs/PersonalToggle";
 import { usePullRequests } from "./pull-request/usePullRequests";
 import { colors } from "./ui/colors";
-import { getHeight, Loader } from "./ui/Loader";
+import { Loader } from "./ui/Loader";
 
 export const Header = () => {
   const { fetching, loading } = usePullRequests();
@@ -18,46 +18,31 @@ export const Header = () => {
           waiting for review.
         </p>
       </HeaderText>
-      <Right>
-        <Toggles>
-          <BotToggle />
-          <PersonalToggle />
-          <OrganizationSelect />
-          {fetching && !loading && <Loader small color="gray200" />}
-        </Toggles>
-      </Right>
+      <Filters>
+        <BotToggle />
+        <PersonalToggle />
+        <OrganizationSelect />
+        {fetching && !loading && <Loader small color="gray200" />}
+      </Filters>
     </Container>
   );
 };
 
-const loaderHeight = getHeight({ small: true });
-
-const Toggles = styled.div({
-  display: "flex",
-  flexDirection: "row",
-  gap: "1rem",
-});
-
-const Right = styled.div`
+const Filters = styled.div`
+  flex-direction: row;
+  flex-wrap: wrap;
   display: flex;
   align-items: flex-end;
-  flex-wrap: wrap;
   gap: 15px;
   align-items: center;
-  min-height: ${loaderHeight}px;
-  @media (min-width: 847px) {
-    flex-direction: column-reverse;
-    align-items: flex-end;
-  }
+  min-height: 40px;
 `;
 
 const Container = styled.div({
   display: "flex",
-  flexDirection: "row",
+  flexDirection: "column",
   flexWrap: "wrap",
   gap: 20,
-  justifyContent: "space-between",
-  alignItems: "flex-end",
   marginBottom: "1rem",
 });
 
