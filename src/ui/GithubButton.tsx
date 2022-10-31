@@ -1,16 +1,8 @@
-import styled from "styled-components";
-import github from "../svg/github.svg";
 import { Button, ButtonProps } from "./Button";
+import { Icon } from "./Icon";
 
 export const GitHubButton = (props: ButtonProps) => (
   <Button {...props}>
-    <Icon src={github} alt="github" />
+    <Icon name="github" />
   </Button>
 );
-
-const size = 25;
-
-const Icon = styled.img`
-  width: ${size}px;
-  height: ${size}px;
-`;

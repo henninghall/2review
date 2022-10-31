@@ -6,6 +6,7 @@ import { useUsername } from "../auth/useUsername";
 import { issue } from "../mocks/data/issue";
 import { issues } from "../mocks/data/issues";
 import { useServerMocking } from "../mocks/useServerMocking";
+import { ShowOrgNameToggle } from "../organization/ShowOrgNameToggle";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { Toggle } from "../ui/Toggle";
@@ -29,6 +30,7 @@ export const SettingsModal = () => {
         }}
         onChange={setToken}
       />
+      <ShowOrgNameToggle />
       {isDev && (
         <>
           <Button

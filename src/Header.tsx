@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import { BotToggle } from "./bot-prs/BotToggle";
-import { OrganizationSelect } from "./organization/OrganizationSelect";
-import { PersonalToggle } from "./personal-prs/PersonalToggle";
+import { useLogin } from "./auth/useLogin";
+import { Filters } from "./Filters";
 import { usePullRequests } from "./pull-request/usePullRequests";
 import { colors } from "./ui/colors";
 import { Loader } from "./ui/Loader";
@@ -11,31 +10,25 @@ export const Header = () => {
 
   return (
     <Container>
-      <HeaderText>
-        <h1>Pull requests awaiting your review</h1>
-        <p style={{ color: colors.gray200 }}>
-          Following pull requests are assigned to you or your team and are
-          waiting for review.
-        </p>
-      </HeaderText>
-      <Filters>
-        <BotToggle />
-        <PersonalToggle />
-        <OrganizationSelect />
+      <Top>
+        <HeaderText>
+          <h1>Pull requests awaiting your review</h1>
+          <p style={{ color: colors.gray200 }}>
+            Following pull requests are assigned to you or your team and are
+            waiting for review.
+          </p>
+        </HeaderText>
         {fetching && !loading && <Loader small color="gray200" />}
-      </Filters>
+      </Top>
+      <Filters />
     </Container>
   );
 };
 
-const Filters = styled.div`
-  flex-direction: row;
-  flex-wrap: wrap;
+const Top = styled.div`
   display: flex;
-  align-items: flex-end;
-  gap: 15px;
   align-items: center;
-  min-height: 40px;
+  justify-content: space-between;
 `;
 
 const Container = styled.div({

@@ -1,0 +1,5 @@
+ .multiselect__control{
+	min-width: 300px;
+	border-color: transparent !important;
+	cursor: pointer !important;
+}

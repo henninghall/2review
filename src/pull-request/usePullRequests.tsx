@@ -8,7 +8,11 @@ import {
 } from "react";
 import { useLogin } from "../auth/useLogin";
 import { useUsername } from "../auth/useUsername";
+import { useBotPrs } from "../bot-prs/useBotPrs";
 import { useServerMocking } from "../mocks/useServerMocking";
+import { useOrganizationFilter } from "../organization/useOrganizationFilter";
+import { usePersonalOnly } from "../personal-prs/usePersonalOnly";
+import { useRepoFilter } from "../repo/useRepoFilter";
 import { useMount } from "../useMount";
 import { useTabFocus } from "../useTabFocus";
 import { useFetchPullRequests } from "./fetchPullRequests";
@@ -22,6 +26,7 @@ const MINUTES_BETWEEN_FETCHES = 5;
 
 const PullRequestContext = createContext<{
   data: PullRequest[];
+  visiblePullRequests: PullRequest[];
   error: Error | undefined;
   loading: boolean;
   fetching: boolean;
@@ -66,8 +71,21 @@ export const PullRequestProvider = ({ children }: Props) => {
 
   const loading = fetching && data.length === 0;
 
+  const { personalFilter } = usePersonalOnly();
+  const { botFilter } = useBotPrs();
+  const { organizationFilter } = useOrganizationFilter();
+  const { repoFilter } = useRepoFilter();
+
+  const visiblePullRequests = data
+    .filter(personalFilter)
+    .filter(botFilter)
+    .filter(organizationFilter)
+    .filter(repoFilter);
+
   return (
-    <PullRequestContext.Provider value={{ data, error, loading, fetching }}>
+    <PullRequestContext.Provider
+      value={{ data, error, loading, fetching, visiblePullRequests }}
+    >
       {children}
     </PullRequestContext.Provider>
   );

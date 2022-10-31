@@ -8,12 +8,18 @@ export const colors = {
   gray300: "#555",
   gray400: "#444",
   gray500: "#363636",
+  gray550: "#313131",
   gray600: "#292929",
 };
 
 export const highlights = {
   color: colors.white,
   backgroundColor: colors.gray400,
+};
+
+export const highlightsSoft = {
+  color: colors.white,
+  backgroundColor: colors.gray500,
 };
 
 export const defaults = {

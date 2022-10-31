@@ -1,6 +1,7 @@
 import React from "react";
 import Skeleton from "react-loading-skeleton";
 import styled from "styled-components";
+import { useShowOrgName } from "../organization/useShowOrgName";
 import pr from "../svg/pr.svg";
 import { Card } from "../ui/Card";
 import { colors } from "../ui/colors";
@@ -22,6 +23,7 @@ export const PullRequest = React.memo((props: Props) => {
   let { loading, pullRequest, preview } = props;
   const percent = 60 + (40 * lenghts[props.index]) / 10;
   const { html_url, title } = pullRequest ?? {};
+  const { showOrgName } = useShowOrgName();
 
   return (
     <Card
@@ -42,8 +44,12 @@ export const PullRequest = React.memo((props: Props) => {
         <SubTitle>
           {pullRequest ? (
             <>
-              <RepoName>{pullRequest.owner}</RepoName>
-              <Slash>/</Slash>
+              {showOrgName && (
+                <>
+                  <RepoName>{pullRequest.owner}</RepoName>
+                  <Slash>/</Slash>
+                </>
+              )}
               {pullRequest.base.repo.name}
             </>
           ) : (
