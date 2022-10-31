@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useLogin } from "./auth/useLogin";
 import { Filters } from "./Filters";
 import { usePullRequests } from "./pull-request/usePullRequests";
 import { colors } from "./ui/colors";
@@ -14,8 +13,7 @@ export const Header = () => {
         <HeaderText>
           <h1>Pull requests awaiting your review</h1>
           <p style={{ color: colors.gray200 }}>
-            Following pull requests are assigned to you or your team and are
-            waiting for review.
+            You or your team has been requested to review these pull requests.
           </p>
         </HeaderText>
         {fetching && !loading && <Loader small color="gray200" />}
