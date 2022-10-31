@@ -35,6 +35,7 @@ export const useUsername = () => {
   }, [fetchUsername, setUsername, username]);
 
   return {
+    username,
     loading,
     error,
     clear: () => setUsername(undefined),
