@@ -4,6 +4,7 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { RecoilRoot } from "recoil";
 import { App } from "./App";
+import { LoginContextProvider } from "./auth/useLogin";
 import "./index.css";
 import { PullRequestProvider } from "./pull-request/usePullRequests";
 import reportWebVitals from "./reportWebVitals";
@@ -17,9 +18,11 @@ root.render(
   <SkeletonTheme baseColor={colors.gray300} highlightColor={colors.gray400}>
     <RecoilRoot>
       <React.Suspense>
-        <PullRequestProvider>
-          <App />
-        </PullRequestProvider>
+        <LoginContextProvider>
+          <PullRequestProvider>
+            <App />
+          </PullRequestProvider>
+        </LoginContextProvider>
       </React.Suspense>
     </RecoilRoot>
   </SkeletonTheme>

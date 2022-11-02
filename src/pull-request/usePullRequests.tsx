@@ -10,7 +10,6 @@ import { useLogin } from "../auth/useLogin";
 import { useUsername } from "../auth/useUsername";
 import { useFilters } from "../filtering/useFilters";
 import { useServerMocking } from "../mocks/useServerMocking";
-import { useMount } from "../useMount";
 import { useTabFocus } from "../useTabFocus";
 import { useFetchPullRequests } from "./fetchPullRequests";
 import { PullRequest, RawPullRequest } from "./types";
@@ -32,8 +31,9 @@ const PullRequestContext = createContext<{
 export const usePullRequests = () => useContext(PullRequestContext);
 
 export const PullRequestProvider = ({ children }: Props) => {
-  const { loggedIn } = useLogin();
+  const { loggedIn, useEvent } = useLogin();
   const [fetching, setFetching] = useState(false);
+  const [initialized, setHasInitialized] = useState(false);
   const [error, setError] = useState<undefined | Error>();
   const [data, setData] = useState<PullRequest[]>([]);
   const { getUsername } = useUsername();
@@ -59,21 +59,28 @@ export const PullRequestProvider = ({ children }: Props) => {
       setError(error);
     } finally {
       setFetching(false);
+      setHasInitialized(true);
     }
   }, [fetchPullRequests, fetching, getUsername, loggedIn]);
 
-  useMount(fetch);
+  useEvent("loginSuccess", fetch);
   useTabFocus(fetch);
   useAtInterval(fetch, { minutes: MINUTES_BETWEEN_FETCHES });
   useAtServerMockChange(fetch);
 
-  const loading = fetching && data.length === 0;
+  const loading = !initialized || (fetching && data.length === 0);
 
   const visiblePullRequests = data.filter(combinedFilter);
 
   return (
     <PullRequestContext.Provider
-      value={{ data, error, loading, fetching, visiblePullRequests }}
+      value={{
+        data,
+        error,
+        loading,
+        fetching,
+        visiblePullRequests,
+      }}
     >
       {children}
     </PullRequestContext.Provider>

@@ -23,7 +23,6 @@ export const EmptyCard = () => {
             flexWrap: "wrap",
           }}
         >
-          <h3>Astonishing!</h3>
           <span>{`No pull requests for you${
             showTeamPrs ? " or your team" : ""
           }.`}</span>

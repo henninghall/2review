@@ -11,23 +11,39 @@ export const Footer = () => {
   const [, showModal] = useModal();
   const { loggedIn } = useLogin();
 
+  const links = (
+    [
+      ["Why don't all PRs show up?", "", () => showModal("help"), loggedIn],
+      ["Installation", "", () => showModal("install"), true],
+      [
+        "Github repo",
+        "https://github.com/henninghall/2review",
+        undefined,
+        true,
+      ],
+      ["Settings", "", () => showModal("settings"), true],
+    ] as const
+  ).map(([text, href, onClick, visible]) => ({ text, href, onClick, visible }));
+
   return (
     <Container>
       <Links>
-        {loggedIn && (
-          <Link $padding href="" onClick={() => showModal("help")}>
-            Why don't all PRs show up?
-          </Link>
+        {links.map(
+          ({ href, onClick, visible, text }) =>
+            visible && (
+              <Link
+                key={text}
+                $padding
+                href={href}
+                onClick={(e) => {
+                  if (!href) e.preventDefault();
+                  if (onClick) onClick();
+                }}
+              >
+                {text}
+              </Link>
+            )
         )}
-        <Link $padding href="" onClick={() => showModal("install")}>
-          Installation
-        </Link>
-        <Link $padding href="https://github.com/henninghall/2review">
-          Github repo
-        </Link>
-        <Link $padding href="" onClick={() => showModal("settings")}>
-          Settings
-        </Link>
       </Links>
     </Container>
   );

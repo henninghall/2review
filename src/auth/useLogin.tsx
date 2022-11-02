@@ -1,4 +1,10 @@
-import { useCallback, useEffect } from "react";
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+} from "react";
 import { atom, useRecoilState } from "recoil";
 import { github } from "../api/githubApi";
 import { LoginBody } from "../api/types";
@@ -14,10 +20,24 @@ const loggedInState = atom({
   default: !!github.token.get(),
 });
 
-export const useLogin = () => {
+type AuthEvent = "loginSuccess";
+
+let listeners: { event: AuthEvent; onEvent: () => void }[] = [];
+
+interface LoginValue {
+  login: () => Promise<void>;
+  shouldLogin: () => boolean;
+  loggedIn: boolean;
+  logout: () => void;
+  setLoggedIn: (loggedIn: boolean) => void;
+  useEvent: (event: AuthEvent, onEvent: () => void) => void;
+}
+
+const LoginContext = createContext<LoginValue>({} as never);
+
+export const LoginContextProvider = ({ children }: { children: ReactNode }) => {
   const [loggedIn, setLoggedIn] = useRecoilState(loggedInState);
   const [, setIsAuthorizing] = useIsAuthorizing();
-
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");
   const receivedState = params.get("state");
@@ -30,6 +50,10 @@ export const useLogin = () => {
     }
     return true;
   }, [receivedState]);
+
+  const emit = (event: AuthEvent) => {
+    listeners.filter((l) => l.event === event).forEach((l) => l.onEvent());
+  };
 
   const login = useCallback(async () => {
     if (!code) return;
@@ -70,8 +94,39 @@ export const useLogin = () => {
     github.refreshToken.set(null);
   };
 
-  return { login, shouldLogin, loggedIn, logout, setLoggedIn };
+  const subscribe = useCallback((event: AuthEvent, onEvent: () => void) => {
+    const listener = { onEvent, event };
+    listeners.push(listener);
+    const unsubscribe = () => {
+      listeners = listeners.filter((l) => l !== listener);
+    };
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    if (loggedIn) emit("loginSuccess");
+  }, [loggedIn]);
+
+  const useEvent = (event: "loginSuccess", fn: () => void) => {
+    useEffect(() => {
+      return subscribe(event, fn);
+    }, [event, fn]);
+  };
+
+  const value: LoginValue = {
+    login,
+    shouldLogin,
+    loggedIn,
+    logout,
+    setLoggedIn,
+    useEvent,
+  };
+  return (
+    <LoginContext.Provider value={value}>{children}</LoginContext.Provider>
+  );
 };
+
+export const useLogin = () => useContext(LoginContext);
 
 export const useLoginWhenNecessary = () => {
   const { shouldLogin, login } = useLogin();
