@@ -5,7 +5,6 @@ import { useShowOrgName } from "../organization/useShowOrgName";
 import pr from "../svg/pr.svg";
 import { Card } from "../ui/Card";
 import { colors } from "../ui/colors";
-import { exists } from "../utils";
 import { Reviewers } from "./Reviewers";
 import { PullRequest as PullRequestType } from "./types";
 

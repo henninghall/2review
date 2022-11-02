@@ -45,6 +45,7 @@ export function MultiSelect({
         key={label}
         options={options}
         isMulti
+        closeMenuOnSelect={false}
         value={selectedData.map(toOption)}
         components={animatedComponents}
         hideSelectedOptions={false}

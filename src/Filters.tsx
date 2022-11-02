@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Skeleton from "react-loading-skeleton";
 import styled from "styled-components";
 import { useLogin } from "./auth/useLogin";
 import { BotToggle } from "./bot-prs/BotToggle";
@@ -14,27 +15,43 @@ import { Link } from "./ui/Link";
 export const Filters = () => {
   const [showFilters, setShowFilters] = useState(false);
   const { loggedIn } = useLogin();
-  const { visiblePullRequests, data } = usePullRequests();
+  const { visiblePullRequests, data, loading } = usePullRequests();
   const { reset, canReset } = useFilters();
+  const preview = !loggedIn;
+  const showSkeleton = preview || loading;
+  const animateSkeleton = showSkeleton && loading;
 
-  if (!loggedIn) return null;
-  if (!data.length) return null;
+  if (!showSkeleton && !data.length) return null;
 
   return (
     <Container>
       <Header
-        href="#"
-        onClick={() => {
+        href={showSkeleton ? undefined : ""}
+        onClick={(e) => {
+          e.preventDefault();
+          if (showSkeleton) return;
           setShowFilters((showing) => !showing);
         }}
       >
         <Left>
-          Filter
-          <Icon name={showFilters ? "chevronUp" : "chevronDown"} size="m" />
+          {showSkeleton ? (
+            <Skeleton width={50} enableAnimation={animateSkeleton} />
+          ) : (
+            "Filter"
+          )}
         </Left>
         <Info>
-          {`Showing ${visiblePullRequests.length} of ${data.length} PRs`}
+          {showSkeleton ? (
+            <Skeleton width={200} enableAnimation={animateSkeleton} />
+          ) : (
+            `Showing ${visiblePullRequests.length} of ${data.length} PRs`
+          )}
         </Info>
+        {showSkeleton ? (
+          <span />
+        ) : (
+          <Icon name={showFilters ? "chevronUp" : "chevronDown"} size="m" />
+        )}
       </Header>
       {showFilters && (
         <Content>
@@ -79,15 +96,16 @@ const Info = styled.p`
 `;
 
 const Header = styled.a`
-  cursor: pointer;
+  cursor: ${({ href }) => href && "pointer"};
   :hover {
-    ${highlightsSoft}
+    ${({ href }) => (href == null ? undefined : highlightsSoft)}
   }
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
   border-radius: 0.5rem;
+  min-height: 1.6rem;
 `;
 
 const LeftContent = styled.div`

@@ -15,17 +15,17 @@ export const Footer = () => {
     <Container>
       <Links>
         {loggedIn && (
-          <Link $padding onClick={() => showModal("help")}>
+          <Link $padding href="" onClick={() => showModal("help")}>
             Why don't all PRs show up?
           </Link>
         )}
-        <Link $padding onClick={() => showModal("install")}>
+        <Link $padding href="" onClick={() => showModal("install")}>
           Installation
         </Link>
         <Link $padding href="https://github.com/henninghall/2review">
           Github repo
         </Link>
-        <Link $padding onClick={() => showModal("settings")}>
+        <Link $padding href="" onClick={() => showModal("settings")}>
           Settings
         </Link>
       </Links>
