@@ -20,7 +20,7 @@ export const useTeamPrs = () => {
     apply: (pr) => {
       if (showTeamPrs) return true;
       if (!username) return false;
-      return pr.person.includes(username);
+      return pr.person.some((p) => p.name === username);
     },
     reset,
     isDefault: initialValue === showTeamPrs,

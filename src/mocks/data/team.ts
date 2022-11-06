@@ -1,7 +1,7 @@
 export type Team = typeof team;
 
 export const team = {
-  name: "Developers",
+  name: "Frontend Developers",
   id: 4312429,
   node_id: "MDQ6VGVhbTQzMTI0Mjk=",
   slug: "developers",

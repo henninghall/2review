@@ -38,10 +38,19 @@ export const useFetchPullRequests = () => {
       const { requested_reviewers, requested_teams, ...rest } = pr.data;
       if (!requested_reviewers) throw Error("Unexpected revivers format");
       if (!requested_teams) throw Error("Unexpected requested teams format");
-      const teams = requested_teams.map((team) => team.name);
+      const teams = requested_teams.map((team) => ({
+        type: "team" as const,
+        name: team.name,
+        avatarUrl: `https://avatars.githubusercontent.com/t/${team.id}`,
+        organization: pr.data.base.repo.owner.login,
+      }));
       const person = requested_reviewers
         .filter((r) => r.login === username)
-        .map((p) => p.login);
+        .map((p) => ({
+          type: "person" as const,
+          name: p.login,
+          avatarUrl: p.avatar_url,
+        }));
       return { person, teams, ...rest };
     });
     return prsWithReviewers;

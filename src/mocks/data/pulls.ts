@@ -23,6 +23,13 @@ export const pulls = {
     pull.requested_reviewers = [reviewer];
     return pull;
   },
+  multipleReviewers: (id: number) => {
+    const pull = getPull(id);
+    pull.title = "Multiple reviewers";
+    pull.requested_reviewers = [reviewer];
+    pull.requested_teams = [team];
+    return pull;
+  },
   organizationA: (id: number) => {
     const pull = getPull(id);
     pull.title = "Organization A";

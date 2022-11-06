@@ -4,7 +4,7 @@ export const reviewer = {
   login: "henninghall",
   id: 1,
   node_id: "MDQ6VXNlcjE=",
-  avatar_url: "https://github.com/images/error/octocat_happy.gif",
+  avatar_url: "https://avatars.githubusercontent.com/u/1652607?v=4",
   gravatar_id: "",
   url: "https://api.github.com/users/octocat",
   html_url: "https://github.com/octocat",

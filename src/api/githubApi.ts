@@ -32,4 +32,5 @@ export const GithubApi = {
   getIssuesAndPullRequests: api.rest.search.issuesAndPullRequests,
   getPullRequest: api.rest.pulls.get,
   getOrganizations: api.rest.orgs.get,
+  getTeamByName: api.rest.teams.getByName,
 };
