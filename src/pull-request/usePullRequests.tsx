@@ -98,7 +98,7 @@ const useAtInterval = (fetch: () => void, { minutes }: { minutes: number }) => {
 const addExtras = (pr: RawPullRequest): PullRequest => {
   return {
     ...pr,
-    hasOrganizationOwner: pr.head.repo?.owner.type === "Organization",
-    owner: pr.head.repo?.owner.login,
+    hasOrganizationOwner: pr.base.repo.owner.type === "Organization",
+    owner: pr.base.repo.owner.login,
   };
 };

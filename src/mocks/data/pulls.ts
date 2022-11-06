@@ -33,12 +33,8 @@ export const pulls = {
   organizationA: (id: number) => {
     const pull = getPull(id);
     pull.title = "Organization A";
-    pull.head.repo.name = "RepoA";
-    pull.head.repo.full_name = "OrgA/RepoA";
     pull.base.repo.name = "RepoA";
     pull.base.repo.full_name = "OrgA/RepoA";
-    pull.head.repo.owner.type = "Organization";
-    pull.head.repo.owner.login = "OrgA";
     pull.base.repo.owner.type = "Organization";
     pull.base.repo.owner.login = "OrgA";
     return pull;
@@ -46,8 +42,6 @@ export const pulls = {
   organizationB: (id: number) => {
     const pull = getPull(id);
     pull.title = "Organization B";
-    pull.head.repo.owner.type = "Organization";
-    pull.head.repo.owner.login = "OrgB";
     pull.base.repo.owner.type = "Organization";
     pull.base.repo.owner.login = "OrgB";
     return pull;
