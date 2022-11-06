@@ -106,6 +106,7 @@ const Header = styled.a`
   padding: 1rem 1.5rem;
   border-radius: 0.5rem;
   min-height: 1.6rem;
+  gap: 1rem;
 `;
 
 const LeftContent = styled.div`
