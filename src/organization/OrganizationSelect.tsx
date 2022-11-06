@@ -8,14 +8,15 @@ export const OrganizationSelect = () => {
     useOrganizationFilter();
   const { data: prs } = usePullRequests();
   const allOrgs = prs
-    .filter((pr) => pr.hasOrganizationOwner)
     .map((pr) => pr.owner)
     .filter(onlyUnique)
     .filter(exists);
 
+  const hasOnlyOrganizationOwners = prs.every((p) => p.hasOrganizationOwner);
+
   return (
     <MultiSelect
-      label="Organizations"
+      label={hasOnlyOrganizationOwners ? "Organizations" : "Owners"}
       all={allOrgs}
       onExcludedDataChanged={setExcludedOrganizations}
       excluded={excludedOrganizations}

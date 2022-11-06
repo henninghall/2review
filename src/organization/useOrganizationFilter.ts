@@ -18,7 +18,6 @@ export const useOrganizationFilter = () => {
   const organizationFilter: Filter = {
     reset,
     apply: (pr) => {
-      if (!pr.hasOrganizationOwner) return true;
       if (!pr.owner) return true;
       return !excludedOrganizations.includes(pr.owner);
     },
