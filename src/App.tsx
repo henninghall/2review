@@ -11,6 +11,7 @@ import { Modals } from "./modals/CurrentModal";
 import { useNewPrsIndicator } from "./new-prs-indicator/useNewPrsIndicator";
 import { PullRequests } from "./pull-request/PullRequests";
 import { SignInOverlay } from "./SignInOverlay";
+import { useAnalytics } from "./useAnalytics";
 
 export function App() {
   const { loggedIn } = useLogin();
@@ -18,6 +19,7 @@ export function App() {
   useLogoutWhenNecessary();
   useNewPrsIndicator();
   useInitServerMocking();
+  useAnalytics();
 
   return (
     <>
