@@ -1,3 +1,4 @@
+import fetch from "node-fetch";
 // import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 export default async function handler(req, res) {
