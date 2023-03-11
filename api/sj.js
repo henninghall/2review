@@ -41,14 +41,16 @@ const get = () => {
       const json = await res.json();
       const get = (a, b) =>
         json.salesCategoryPrice.SEAT[a][b].journeyPriceDescription.soldOut;
-      const seats = ["STANDARD", "COMFORT", "STANDARD_EXTENDED"];
+      const seats = ["STANDARD"];
       const types = ["FIX", "FLEX", "FULL"];
+      let data = [];
       for (const seat of seats) {
         for (const type of types) {
           const soldOut = get(seat, type);
-          resolve({ seat, type, soldOut });
+          data.push({ seat, type, soldOut });
         }
       }
+      resolve(data);
     });
   });
 };
