@@ -1,6 +1,6 @@
 // import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-export default async function handler(req, res) {
+export default function handler(req, res) {
   //   const data = await get();
   res.status(200).json({});
 }
